@@ -22,5 +22,9 @@
   "bugs": {
     "url": "https://github.com/hendrikniemann/setlx.js/issues"
   },
-  "homepage": "https://github.com/hendrikniemann/setlx.js#readme"
+  "homepage": "https://github.com/hendrikniemann/setlx.js#readme",
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-peg": "^0.1.2"
+  }
 }
