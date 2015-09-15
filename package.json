@@ -1,0 +1,26 @@
+{
+  "name": "setlxjs",
+  "version": "1.0.0",
+  "description": "setlX to Javascript transpiler",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hendrikniemann/setlx.js.git"
+  },
+  "keywords": [
+    "setlx",
+    "transpiler"
+  ],
+  "author": "hendrikniemann",
+  "license": "GPL-2.0",
+  "bugs": {
+    "url": "https://github.com/hendrikniemann/setlx.js/issues"
+  },
+  "homepage": "https://github.com/hendrikniemann/setlx.js#readme"
+}
