@@ -8,11 +8,27 @@ A SetlX to Javascript Transpiler.
 
 Clone the Repository
 
-```bash
+```
 git clone https://github.com/hendrikniemann/setlx.js.git
+cd setlx.js
 ```
 
 Install Modules
-```bash
+```
 npm install
+```
+
+Install Gulp if you haven't already
+```
+npm install -g gulp
+```
+
+Compile the files with Gulp
+```
+gulp
+```
+
+Run the tests with Gulp
+```
+gulp test:grammar
 ```
