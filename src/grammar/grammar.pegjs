@@ -21,7 +21,7 @@ Block = stmts:Statement+
     { return stmts.join('\n'); }
 
 Statement = WS stmt:(Assignment / Expression) WS ';'
-    { return stmt; }
+    { return stmt + ';'; }
   / WS 'if' WS '(' WS cond:Expression WS ')' WS '{' WS blk:Block WS '}' WS
     elif:(
       'else' WS 'if' WS '(' WS cond:Expression WS ')' WS '{' WS blk:Block WS '}' WS
@@ -72,9 +72,9 @@ Expression = expr1:SomeType WS op:JSOP WS expr2:SomeType
   / expr:SomeType
     { return expr; }
 
-TypeList = type:SomeType more:( ',' WS types:SomeType WS )+
+TypeList = type:SomeType more:( WS ',' WS types:SomeType WS )+
     {
-      var types = more.map(e => e[2]);
+      var types = more.map(e => e[3]);
       types.unshift(type)
       return types.join(', ');
     }
@@ -84,7 +84,7 @@ TypeList = type:SomeType more:( ',' WS types:SomeType WS )+
 SomeType = type:( Primitive / LIST / ID )
     { return type; }
 
-Primitive = primitive:( DOUBLE / NUMBER / STRING )
+Primitive = primitive:( DOUBLE / NUMBER / STRING / BOOLEAN )
     { return primitive; }
 
 LIST "list" = '[' WS lst:TypeList WS ']'
