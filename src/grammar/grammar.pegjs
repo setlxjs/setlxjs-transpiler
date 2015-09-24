@@ -14,13 +14,16 @@
   stdLib.set('print', 'console.log');
 }
 
-Programm = blk:Block
+Programm
+  = blk:Block
     { return blk; }
 
-Block = stmts:Statement+
+Block
+  = stmts:Statement+
     { return stmts.join('\n'); }
 
-Statement = WS stmt:(Assignment / Expression) WS ';'
+Statement
+  = WS stmt:(Assignment / Expression) WS ';'
     { return stmt + ';'; }
   / WS 'if' WS '(' WS cond:Expression WS ')' WS '{' WS blk:Block WS '}' WS
     elif:(
@@ -42,20 +45,21 @@ Statement = WS stmt:(Assignment / Expression) WS ';'
       return ifstmt + elifstmts + elstmt + '\n';
     }
 
-Assignment = id:ID WS ':=' WS expr:Expression
+Assignment
+  = id:ID WS ':=' WS expr:Expression
     {
       if ( isKnown( id ) ) {
-        return id + ' = ' + expr + ';';
+        return id + ' = ' + expr;
       } else {
-        return 'let ' + id + ' = ' + expr + ';';
+        return 'let ' + id + ' = ' + expr;
       }
     }
   / id:ID WS op:('+='/ '*=' / '-=' / '/=' / '%=') WS expr:Expression
     {
       if ( isKnown( id ) ) {
-        return id + ' ' + op + ' ' + expr + ';';
+        return id + ' ' + op + ' ' + expr;
       } else {
-        return 'let ' + id + ' ' + op + ' ' + expr + ';';
+        return 'let ' + id + ' ' + op + ' ' + expr;
       }
     }
   / id:ID WS '\\=' WS expr:Expression
@@ -63,16 +67,18 @@ Assignment = id:ID WS ':=' WS expr:Expression
       if ( isKnown( id ) ) {
         return id + ' = Math.floor( ' + id + ' / ' + expr + ' );';
       } else {
-        return 'let ' + id + ' = ' + expr + ';';
+        return 'let ' + id + ' = ' + expr;
       }
     }
 
-Expression = expr1:SomeType WS op:JSOP WS expr2:SomeType
+Expression
+  = expr1:SomeType WS op:JSOP WS expr2:SomeType
     { return [expr1, op, expr2].join(' '); }
   / expr:SomeType
     { return expr; }
 
-TypeList = type:SomeType more:( WS ',' WS types:SomeType WS )+
+TypeList
+  = type:SomeType more:( WS ',' WS types:SomeType WS )+
     {
       var types = more.map(e => e[3]);
       types.unshift(type)
@@ -81,34 +87,44 @@ TypeList = type:SomeType more:( WS ',' WS types:SomeType WS )+
   / type:SomeType?
     { return type ? type : ''; }
 
-SomeType = type:( Primitive / LIST / ID )
+SomeType
+  = type:( Primitive / LIST / ID )
     { return type; }
 
-Primitive = primitive:( DOUBLE / NUMBER / STRING / BOOLEAN )
+Primitive
+  = primitive:( DOUBLE / NUMBER / STRING / BOOLEAN )
     { return primitive; }
 
-LIST "list" = '[' WS lst:TypeList WS ']'
+LIST "list"
+  = '[' WS lst:TypeList WS ']'
     { return '[' + lst + ']'; }
 
-ID "identifer" = [a-z][a-zA-Z_0-9]*
+ID "identifer"
+  = [a-z][a-zA-Z_0-9]*
     { return text(); }
 
-BOOLEAN = 'true' / 'false'
+BOOLEAN
+  = 'true' / 'false'
     { return text(); }
 
-NUMBER "number" = '0'
+NUMBER "number"
+  = '0'
     { return '0'; }
   / [1-9][0-9]*
     { return text(); }
 
-DOUBLE "double" = NUMBER? '.' [0-9]+([eE] ('+' / '-')? [0-9]+)?
+DOUBLE "double"
+  = NUMBER? '.' [0-9]+([eE] ('+' / '-')? [0-9]+)?
     { return text(); }
 
-STRING "string" = '"' ('\\"' / [^\"])* '"'
+STRING "string"
+  = '"' ('\\"' / [^\"])* '"'
     { return text(); }
 
-JSOP "operator" = [+-/*]
+JSOP "operator"
+  = [+-/*]
     { return text(); }
 
-WS "whitespace" = [ \t\n\r]*
+WS "whitespace"
+  = [ \t\n\r]*
     { return false; }
