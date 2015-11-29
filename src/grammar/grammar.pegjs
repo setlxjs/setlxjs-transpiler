@@ -1,6 +1,19 @@
 {
-  var knownVars = new Set();
+  var Primitive = require('./classes/Primitive');
+  var List = require('./classes/List');
+  var IfStmt = require('./classes/IfStmt');
+  var Block = require('./classes/Block');
+  var Assignment = require('./classes/Assignment');
+  var Identifer = require('./classes/Identifer');
+  var Statement = require('./classes/Statement');
 
+  var __types = require('./constants/types');
+  var INTEGER = __types.INTEGER;
+  var STRING = __types.STRING;
+  var DOUBLE = __types.DOUBLE;
+  var BOOLEAN = __types.BOOLEAN;
+
+  var knownVars = new Set();
   function isKnown( name ) {
     if ( knownVars.has( name ) ) {
       return true;
@@ -15,77 +28,50 @@
 }
 
 Programm
-  = blk:Block
-    { return blk; }
+  = blk:Block WS
+    { return blk.toJS(); }
 
 Block
   = stmts:Statement+
-    { return stmts.join('\n'); }
+    { return Block( stmts ); }
 
 Statement
-  = WS stmt:(Assignment / Expression) WS ';'
-    { return stmt + ';'; }
-  / WS 'if' WS '(' WS cond:Expression WS ')' WS '{' WS blk:Block WS '}' WS
-    elif:(
-      'else' WS 'if' WS '(' WS cond:Expression WS ')' WS '{' WS blk:Block WS '}' WS
-    )*
+  = WS expr:(Assignment / Expression) WS ';'
+    { return Statement( expr ); }
+  / stmt:IfStmt
+    { return stmt; }
+
+IfStmt
+  = WS 'if' WS '(' WS cond:Expression WS ')' WS '{' WS blk:Block WS '}' WS
     el:(
-      'else' WS '{' WS elblk:Block WS '}' WS
+      'else' WS (IfStmt / '{' WS Block WS '}') WS
     )?
     {
-      var ifstmt = 'if ( ' + cond + ' ) {\n' + blk + '\n}';
-      var elstmt = '';
-      if (el) {
-        elstmt = ' else {\n' + elblk + '\n}';
+      if(!el) {
+        return IfStmt(cond, blk);
       }
-      var elifstmts = elif.map(e => {
-        return 'else if ( ' + e.cond + ' ) {\n' + blk + '\n}';
-      }).join('');
-
-      return ifstmt + elifstmts + elstmt + '\n';
+      return IfStmt(cond, blk, el[2]);
     }
 
 Assignment
   = id:ID WS ':=' WS expr:Expression
-    {
-      if ( isKnown( id ) ) {
-        return id + ' = ' + expr;
-      } else {
-        return 'let ' + id + ' = ' + expr;
-      }
-    }
-  / id:ID WS op:('+='/ '*=' / '-=' / '/=' / '%=') WS expr:Expression
-    {
-      if ( isKnown( id ) ) {
-        return id + ' ' + op + ' ' + expr;
-      } else {
-        return 'let ' + id + ' ' + op + ' ' + expr;
-      }
-    }
-  / id:ID WS '\\=' WS expr:Expression
-    {
-      if ( isKnown( id ) ) {
-        return id + ' = Math.floor( ' + id + ' / ' + expr + ' );';
-      } else {
-        return 'let ' + id + ' = ' + expr;
-      }
-    }
+    { return Assignment(id, expr); }
+  /*/ id:ID WS op:('+='/ '*=' / '-=' / '/=' / '%=' / '\\=') WS expr:Expression*/
+    /*{ return Assignment(id, getDirectAssignmentOp(op)(id, expr) ); }*/
 
 Expression
-  = expr1:SomeType WS op:JSOP WS expr2:SomeType
-    { return [expr1, op, expr2].join(' '); }
-  / expr:SomeType
+  = expr:SomeType
     { return expr; }
 
 TypeList
   = type:SomeType more:( WS ',' WS types:SomeType WS )+
     {
       var types = more.map(e => e[3]);
-      types.unshift(type)
-      return types.join(', ');
+      types.unshift(type);
+      return types;
     }
   / type:SomeType?
-    { return type ? type : ''; }
+    { return type ? [type] : []; }
 
 SomeType
   = type:( Primitive / LIST / ID )
@@ -97,33 +83,29 @@ Primitive
 
 LIST "list"
   = '[' WS lst:TypeList WS ']'
-    { return '[' + lst + ']'; }
+    { return List(lst); }
 
 ID "identifer"
   = [a-z][a-zA-Z_0-9]*
-    { return text(); }
+    { return Identifer( text() ); }
 
-BOOLEAN
-  = 'true' / 'false'
-    { return text(); }
+BOOLEAN "bool"
+  = ('true' / 'false')
+    { return Primitive( BOOLEAN, text() ); }
 
 NUMBER "number"
   = '0'
-    { return '0'; }
+    { return Primitive( INTEGER, 0 ); }
   / [1-9][0-9]*
-    { return text(); }
+    { return Primitive( INTEGER, parseInt(text(), 10) ); }
 
 DOUBLE "double"
   = NUMBER? '.' [0-9]+([eE] ('+' / '-')? [0-9]+)?
-    { return text(); }
+    { return Primitive( DOUBLE, text() ); }
 
 STRING "string"
   = '"' ('\\"' / [^\"])* '"'
-    { return text(); }
-
-JSOP "operator"
-  = [+-/*]
-    { return text(); }
+    { return Primitive( STRING, text() ); }
 
 WS "whitespace"
   = [ \t\n\r]*
