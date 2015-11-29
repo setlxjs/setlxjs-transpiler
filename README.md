@@ -9,11 +9,11 @@ A SetlX to Javascript Transpiler.
 Clone the Repository
 
 ```
-git clone https://github.com/hendrikniemann/setlx.js.git
-cd setlx.js
+git clone https://github.com/hendrikniemann/setlx.js.git setlxjs
+cd setlxjs
 ```
 
-Install Modules
+Install dependencies
 ```
 npm install
 ```
@@ -26,6 +26,11 @@ npm install -g gulp
 Compile the files with Gulp
 ```
 gulp
+```
+
+Or let Gulp watch for changes
+```
+gulp watch
 ```
 
 Run the tests with Gulp
