@@ -9,10 +9,6 @@ class Identifer {
   toString() {
     return this.token;
   }
-
-  toJS() {
-    return this.name;
-  }
 }
 
 export default function creator( name ) {

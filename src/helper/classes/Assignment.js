@@ -10,10 +10,6 @@ class Assignment {
   toString() {
     return this.token + '[' + this.expression + ']';
   }
-
-  toJS() {
-    return this.receiver.toJS() + ' = ' + this.expression.toJS();
-  }
 }
 
 export default function creator( receiver, expression ) {

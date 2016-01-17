@@ -7,17 +7,15 @@ const async = require('async');
 // Enable should on Object prototype
 require('should');
 
-const parser = require('../../build/grammar.js');
+const transpile = require('../../build/index.js');
 
 const BASE = './test/grammar/';
 
 describe('The parser', function() {
-
   const files = [];
 
   // We want to compare compiled setlX files with matching js files
   const rfiles = fs.readdirSync(path.join(BASE, 'files')).map(path.parse);
-
 
   // Split setlX and JS files
   const setlx = rfiles
@@ -47,7 +45,7 @@ describe('The parser', function() {
           const setlxCode = arr[0].toString();
           const jsCode = arr[1].toString().replace(/\r\n/g, '\n');
 
-          const parsed = parser.parse(setlxCode);
+          const parsed = transpile(setlxCode);
 
           parsed.should.be.ok().and.a.String();
           parsed.should.equal(jsCode);

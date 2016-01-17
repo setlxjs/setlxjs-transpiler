@@ -9,10 +9,6 @@ class List {
   toString() {
     return this.token + '[' + this.elements.join(', ') + ']';
   }
-
-  toJS() {
-    return '[' + this.elements.map(elem => elem.toJS()).join(', ') + ']';
-  }
 }
 
 export default function creator( elements ) {

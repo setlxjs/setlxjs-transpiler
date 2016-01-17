@@ -9,10 +9,6 @@ class Statement {
   toString() {
     return this.expression.toString();
   }
-
-  toJS() {
-    return this.expression.toJS() + ';';
-  }
 }
 
 export default function creator( expression ) {

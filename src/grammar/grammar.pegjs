@@ -1,13 +1,13 @@
 {
-  var Primitive = require('./classes/Primitive');
-  var List = require('./classes/List');
-  var IfStmt = require('./classes/IfStmt');
-  var Block = require('./classes/Block');
-  var Assignment = require('./classes/Assignment');
-  var Identifer = require('./classes/Identifer');
-  var Statement = require('./classes/Statement');
+  var Primitive = require('../classes/Primitive');
+  var List = require('../classes/List');
+  var IfStmt = require('../classes/IfStmt');
+  var Block = require('../classes/Block');
+  var Assignment = require('../classes/Assignment');
+  var Identifer = require('../classes/Identifer');
+  var Statement = require('../classes/Statement');
 
-  var __types = require('./constants/types');
+  var __types = require('../constants/types');
   var INTEGER = __types.INTEGER;
   var STRING = __types.STRING;
   var DOUBLE = __types.DOUBLE;
@@ -29,7 +29,7 @@
 
 Programm
   = blk:Block WS
-    { return blk.toJS(); }
+    { return blk; }
 
 Block
   = stmts:Statement+

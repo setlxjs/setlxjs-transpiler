@@ -10,10 +10,6 @@ class Primitive {
   toString() {
     return `PRIMITIVE(${this.type})`;
   }
-
-  toJS() {
-    return this.value.toString();
-  }
 }
 
 export default function creator(type, value) {

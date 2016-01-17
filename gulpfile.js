@@ -9,7 +9,7 @@ const HELPER_PATH = 'src/helper/**/*.js';
 gulp.task('make:grammar', () => {
   gulp.src(GRAMMAR_PATH)
     .pipe(peg())
-    .pipe(gulp.dest('build/'));
+    .pipe(gulp.dest('build/grammar/'));
 });
 
 gulp.task('make:helpers', () => {
