@@ -4,6 +4,7 @@ import primitive from './primitive';
 import assignment from './assignment';
 import identifer from './identifer';
 import list from './list';
+import ifStmt from './ifStmt';
 
 export default [
   block,
@@ -12,4 +13,5 @@ export default [
   assignment,
   identifer,
   list,
+  ifStmt,
 ];

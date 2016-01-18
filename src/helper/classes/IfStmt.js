@@ -14,20 +14,6 @@ class IfStmt {
     }
     return this.token + `(${this.condition})[${this.block}}, ${this.elseBlk}]`;
   }
-
-  toJS() {
-    let ret = `if (${this.condition}) {\n${ this.block.toJS() }}`;
-
-    if ( this.elseBlk !== null ) {
-      if ( this.elseBlk.token === BLOCK ) {
-        ret += ` else {\n${ this.elseBlk.toJS() }}\n`;
-      } else {
-        ret += ' else ' + this.elseBlk.toJS();
-      }
-    }
-
-    return ret + '}\n';
-  }
 }
 
 export default function creator(condition, block, elseBlk) {

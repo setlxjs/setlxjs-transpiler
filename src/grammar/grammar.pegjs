@@ -44,13 +44,14 @@ Statement
 IfStmt
   = WS 'if' WS '(' WS cond:Expression WS ')' WS '{' WS blk:Block WS '}' WS
     el:(
-      'else' WS (IfStmt / '{' WS Block WS '}') WS
+      'else' WS (elif:IfStmt / '{' WS elblk:Block WS '}') WS
     )?
     {
       if(!el) {
         return IfStmt(cond, blk);
       }
-      return IfStmt(cond, blk, el[2]);
+      // el[2][2] is the block when defined, or er[2] the if statement...
+      return IfStmt(cond, blk, el[2][2] || el[2]);
     }
 
 Assignment
