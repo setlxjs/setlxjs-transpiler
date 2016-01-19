@@ -7,7 +7,7 @@ class List {
   }
 
   toString() {
-    return this.token + '[' + this.elements.join(', ') + ']';
+    return `List( ${ this.elements.join(', ') } )`;
   }
 }
 

@@ -7,7 +7,7 @@ class Block {
   }
 
   toString() {
-    return this.token + '[\n' + this.statements.join(',\n') + '\n]\n';
+    return `Block(\n ${ this.statements.join(',\n') }\n)`;
   }
 }
 

@@ -3,7 +3,7 @@ import { STATEMENT } from '../constants/tokens';
 class Statement {
   constructor( expression ) {
     this.token = STATEMENT;
-    this.expression = expression;
+    this.child = expression;
   }
 
   toString() {

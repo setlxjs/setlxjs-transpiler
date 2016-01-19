@@ -8,7 +8,7 @@ class Assignment {
   }
 
   toString() {
-    return this.token + '[' + this.expression + ']';
+    return 'Assignment( ' + this.receiver + ', ' + this.expression + ' )';
   }
 }
 

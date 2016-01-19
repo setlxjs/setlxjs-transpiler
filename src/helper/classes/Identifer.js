@@ -7,7 +7,7 @@ class Identifer {
   }
 
   toString() {
-    return this.token;
+    return 'Identifer()';
   }
 }
 
