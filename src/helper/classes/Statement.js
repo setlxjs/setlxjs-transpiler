@@ -1,16 +1,16 @@
 import { STATEMENT } from '../constants/tokens';
 
 class Statement {
-  constructor( expression ) {
+  constructor( child ) {
     this.token = STATEMENT;
-    this.child = expression;
+    this.child = child;
   }
 
   toString() {
-    return this.expression.toString();
+    return this.child.toString();
   }
 }
 
-export default function creator( expression ) {
-  return new Statement( expression );
+export default function creator( child ) {
+  return new Statement( child );
 }
