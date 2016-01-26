@@ -1,6 +1,6 @@
 import createTranspiler from '../util/createTranspiler';
 
-import { PRIMITIVE } from '../constants/tokens.js';
+import { PRIMITIVE } from '../constants/tokens';
 
 const primitive = createTranspiler( PRIMITIVE, tree => tree.value.toString() );
 
