@@ -14,6 +14,7 @@ const Conjunction = require('../../build/classes/Conjunction');
 const __types = require('../../build/constants/types');
 const BOOLEAN = __types.BOOLEAN;
 const INTEGER = __types.INTEGER;
+const STRING = __types.STRING;
 
 const __operators = require('../../build/constants/operators');
 const PLUS = __operators.PLUS;
@@ -39,11 +40,23 @@ describe('Expression Parser', () => {
     actual.toString().should.be.exactly(expected.toString());
   });
 
-  it('should parse primitives', () => {
-    const actual = parseExpression('2;');
-    const expected = Primitive(INTEGER);
+  it('should parse expression assignments', () => {
+    const actual = parseExpression('var1 := true && false;');
+    const expected = Assignment(
+      Identifer(),
+      Conjunction( Primitive(BOOLEAN), Primitive(BOOLEAN) )
+    );
 
     actual.toString().should.be.exactly(expected.toString());
+  });
+
+  it('should parse primitives', () => {
+    parseExpression('2;').toString()
+      .should.be.exactly(Primitive(INTEGER).toString());
+    parseExpression('true;').toString()
+      .should.be.exactly(Primitive(BOOLEAN).toString());
+    parseExpression('"str";').toString()
+      .should.be.exactly(Primitive(STRING).toString());
   });
 
   it('should parse sums', () => {
@@ -56,6 +69,17 @@ describe('Expression Parser', () => {
     const expectedMinus = Sum( MINUS, Primitive(INTEGER), Primitive(INTEGER) );
 
     actualMinus.toString().should.be.exactly(expectedMinus.toString());
+  });
+
+  it('should parse nested sums', () => {
+    const actual = parseExpression('2 + 3 - 4;');
+    const expected = Sum(
+      PLUS,
+      Sum( MINUS, Primitive(INTEGER), Primitive(INTEGER) ),
+      Primitive(INTEGER)
+    );
+
+    actual.toString().should.be.exactly(expected.toString());
   });
 
   it('should parse products', () => {
