@@ -5,13 +5,17 @@ import assignment from './assignment';
 import identifer from './identifer';
 import list from './list';
 import ifStmt from './ifStmt';
+import disjunction from './disjunction';
+import conjunction from './conjunction';
 
 export default [
-  block,
-  statement,
   primitive,
-  assignment,
   identifer,
   list,
+  block,
+  assignment,
+  statement,
   ifStmt,
+  disjunction,
+  conjunction,
 ];
