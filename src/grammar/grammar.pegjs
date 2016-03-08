@@ -1,114 +1,170 @@
 {
-  var knownVars = new Set();
+  var Primitive = require('../classes/Primitive');
+  var List = require('../classes/List');
+  var IfStmt = require('../classes/IfStmt');
+  var Block = require('../classes/Block');
+  var Assignment = require('../classes/Assignment');
+  var Identifer = require('../classes/Identifer');
+  var Statement = require('../classes/Statement');
+  var Disjunction = require('../classes/Disjunction');
+  var Conjunction = require('../classes/Conjunction');
+  var Comparison = require('../classes/Comparison');
+  var Sum = require('../classes/Sum');
+  var Product = require('../classes/Product');
 
-  function isKnown( name ) {
-    if ( knownVars.has( name ) ) {
-      return true;
-    }
-    knownVars.add( name );
-    return false;
-  }
+  var __types = require('../constants/types');
+  var INTEGER = __types.INTEGER;
+  var STRING = __types.STRING;
+  var DOUBLE = __types.DOUBLE;
+  var BOOLEAN = __types.BOOLEAN;
 
-  var stdLib = new Map();
-
-  stdLib.set('print', 'console.log');
+  var __operators = require('../constants/operators');
+  var EQUAL = __operators.EQUAL;
+  var NOT_EQUAL = __operators.NOT_EQUAL;
+  var GREATER_THAN = __operators.GREATER_THAN;
+  var LESS_THAN = __operators.LESS_THAN;
+  var GREATER_EQUAL_THAN = __operators.GREATER_EQUAL_THAN;
+  var LESS_EQUAL_THAN = __operators.LESS_EQUAL_THAN;
+  var IS_IN = __operators.IS_IN;
+  var IS_NOT_IN = __operators.IS_NOT_IN;
+  var PLUS = __operators.PLUS;
+  var MINUS = __operators.MINUS;
+  var TIMES = __operators.TIMES;
+  var DIVIDED_BY = __operators.DIVIDED_BY;
 }
 
-Programm = blk:Block
+Programm
+  = blk:Block WS
     { return blk; }
 
-Block = stmts:Statement+
-    { return stmts.join('\n'); }
+Block
+  = stmts:Statement+
+    { return Block( stmts ); }
 
-Statement = WS stmt:(Assignment / Expression) WS ';'
-    { return stmt + ';'; }
-  / WS 'if' WS '(' WS cond:Expression WS ')' WS '{' WS blk:Block WS '}' WS
-    elif:(
-      'else' WS 'if' WS '(' WS cond:Expression WS ')' WS '{' WS blk:Block WS '}' WS
-    )*
+Statement
+  = WS expr:(Assignment / Expression) WS ';'
+    { return Statement( expr ); }
+  / stmt:IfStmt
+    { return stmt; }
+
+IfStmt
+  = WS 'if' WS '(' WS cond:Expression WS ')' WS '{' WS blk:Block WS '}' WS
     el:(
-      'else' WS '{' WS elblk:Block WS '}' WS
+      'else' WS (elif:IfStmt / '{' WS elblk:Block WS '}') WS
     )?
     {
-      var ifstmt = 'if ( ' + cond + ' ) {\n' + blk + '\n}';
-      var elstmt = '';
-      if (el) {
-        elstmt = ' else {\n' + elblk + '\n}';
+      if(!el) {
+        return IfStmt(cond, blk);
       }
-      var elifstmts = elif.map(e => {
-        return 'else if ( ' + e.cond + ' ) {\n' + blk + '\n}';
-      }).join('');
-
-      return ifstmt + elifstmts + elstmt + '\n';
+      // el[2][2] is the block when defined, or er[2] the if statement...
+      return IfStmt(cond, blk, el[2][2] || el[2]);
     }
 
-Assignment = id:ID WS ':=' WS expr:Expression
+Assignment
+  = id:ID WS ':=' WS expr:Expression
+    { return Assignment(id, expr); }
+  /*/ id:ID WS op:('+='/ '*=' / '-=' / '/=' / '%=' / '\\=') WS expr:Expression*/
+    /*{ return Assignment(id, getDirectAssignmentOp(op)(id, expr) ); }*/
+
+Expression
+  = disj:Disjunction
+    { return disj; }
+
+Disjunction
+  = conj1:Conjunction conj2:( WS '||' WS Conjunction )?
+    { return conj2 ? Disjunction(conj1, conj2[3]) : conj1; }
+
+Conjunction
+  = comp1:Comparison comp2:( WS '&&' WS Comparison )?
+    { return comp2 ? Conjunction(comp1, comp2[3]) : comp1; }
+
+Comparison
+  = sum1:Sum sum2:( WS
+  (
+      '=='    { return EQUAL; }
+    / '!='    { return NOT_EQUAL; }
+    / '>='    { return GREATER_EQUAL_THAN; }
+    / '<='    { return LESS_EQUAL_THAN; }
+    / '>'     { return GREATER_THAN; }
+    / '<'     { return LESS_THAN; }
+    / 'in'    { return IS_IN; }
+    / 'notin' { return IS_NOT_IN; }
+  )
+  WS Sum )?
+    { return sum2 ? Comparison( sum2[1], sum2[3], sum1 ) : sum1; }
+
+Sum
+  = prod1:Product prod2:(
+    WS ('+' { return PLUS; } / '-' { return MINUS; }) WS Product
+  )?
     {
-      if ( isKnown( id ) ) {
-        return id + ' = ' + expr + ';';
-      } else {
-        return 'let ' + id + ' = ' + expr + ';';
-      }
-    }
-  / id:ID WS op:('+='/ '*=' / '-=' / '/=' / '%=') WS expr:Expression
-    {
-      if ( isKnown( id ) ) {
-        return id + ' ' + op + ' ' + expr + ';';
-      } else {
-        return 'let ' + id + ' ' + op + ' ' + expr + ';';
-      }
-    }
-  / id:ID WS '\\=' WS expr:Expression
-    {
-      if ( isKnown( id ) ) {
-        return id + ' = Math.floor( ' + id + ' / ' + expr + ' );';
-      } else {
-        return 'let ' + id + ' = ' + expr + ';';
-      }
+      if (!prod2) { return prod1 };
+      return Sum( prod2[1], prod1, prod2[3] );
     }
 
-Expression = expr1:SomeType WS op:JSOP WS expr2:SomeType
-    { return [expr1, op, expr2].join(' '); }
-  / expr:SomeType
+Product
+  = infx1:InfixOperation infx2:(
+    WS ('*' { return TIMES; } / '/' { return DIVIDED_BY; }) WS InfixOperation
+  )?
+    {
+      if (!infx2) { return infx1 };
+      return Product( infx2[1], infx1, infx2[3] );
+    }
+
+InfixOperation
+  = fact:Factor
+    { return fact; }
+
+Factor
+  = '(' WS expr:Expression WS ')'
     { return expr; }
+  / sType:SomeType
+    { return sType; }
 
-TypeList = type:SomeType more:( WS ',' WS types:SomeType WS )+
+TypeList
+  = type:SomeType more:( WS ',' WS SomeType WS )+
     {
       var types = more.map(e => e[3]);
-      types.unshift(type)
-      return types.join(', ');
+      types.unshift(type);
+      return types;
     }
   / type:SomeType?
-    { return type ? type : ''; }
+    { return type ? [type] : []; }
 
-SomeType = type:( Primitive / LIST / ID )
+SomeType
+  = type:( Primitive / LIST / ID )
     { return type; }
 
-Primitive = primitive:( DOUBLE / NUMBER / STRING / BOOLEAN )
+Primitive
+  = primitive:( DOUBLE / NUMBER / STRING / BOOLEAN )
     { return primitive; }
 
-LIST "list" = '[' WS lst:TypeList WS ']'
-    { return '[' + lst + ']'; }
+LIST "list"
+  = '[' WS lst:TypeList WS ']'
+    { return List(lst); }
 
-ID "identifer" = [a-z][a-zA-Z_0-9]*
-    { return text(); }
+ID "identifer"
+  = [a-z][a-zA-Z_0-9]*
+    { return Identifer( text() ); }
 
-BOOLEAN = 'true' / 'false'
-    { return text(); }
+BOOLEAN "bool"
+  = ('true' / 'false')
+    { return Primitive( BOOLEAN, text() ); }
 
-NUMBER "number" = '0'
-    { return '0'; }
+NUMBER "number"
+  = '0'
+    { return Primitive( INTEGER, 0 ); }
   / [1-9][0-9]*
-    { return text(); }
+    { return Primitive( INTEGER, parseInt(text(), 10) ); }
 
-DOUBLE "double" = NUMBER? '.' [0-9]+([eE] ('+' / '-')? [0-9]+)?
-    { return text(); }
+DOUBLE "double"
+  = NUMBER? '.' [0-9]+([eE] ('+' / '-')? [0-9]+)?
+    { return Primitive( DOUBLE, text() ); }
 
-STRING "string" = '"' ('\\"' / [^\"])* '"'
-    { return text(); }
+STRING "string"
+  = '"' ('\\"' / [^\"])* '"'
+    { return Primitive( STRING, text() ); }
 
-JSOP "operator" = [+-/*]
-    { return text(); }
-
-WS "whitespace" = [ \t\n\r]*
+WS "whitespace"
+  = [ \t\n\r]*
     { return false; }
