@@ -1,4 +1,4 @@
-grammar SetlXgrammar;
+grammar setlx;
 
 initBlock
     : ( statement )+
@@ -48,7 +48,7 @@ statement
     | 'continue' ';'
     | 'exit' ';'
     | 'return' (expr[false])? ';'
-    | 'assert' '(' condition ',' expr[false] ')' ';'                                              }
+    | 'assert' '(' condition ',' expr[false] ')' ';'
     | assignmentOther  ';'
     | assignmentDirect ';'
     | expr[false] ';'
@@ -210,7 +210,7 @@ factor [boolean enableIgnore, boolean quoted]
       )
       (
          '.' variable
-       | call[$enableIgnore, $f]
+       | call[$enableIgnore]
       )*
       (
         '!'
@@ -254,7 +254,7 @@ procedureListParameter
     : '*' variable
     ;
 
-call [boolean enableIgnore, Expr lhs]
+call [boolean enableIgnore]
     : '(' callParameters[$enableIgnore]         ')'
     | '[' collectionAccessParams[$enableIgnore] ']'
     | '{' expr[$enableIgnore]                   '}'
@@ -268,7 +268,7 @@ callParameters [boolean enableIgnore]
 
 collectionAccessParams [boolean enableIgnore]
     : e1 = expr[$enableIgnore] (RANGE_SIGN (e2 = expr[$enableIgnore])? | (',' e3 = expr[false])+)?
-    | RANGE_SIGN expr[$enableIgnore]                      }
+    | RANGE_SIGN expr[$enableIgnore]
     ;
 
 value [boolean enableIgnore, boolean quoted] returns [Expr v]
