@@ -271,7 +271,7 @@ collectionAccessParams [boolean enableIgnore]
     | RANGE_SIGN expr[$enableIgnore]
     ;
 
-value [boolean enableIgnore, boolean quoted] returns [Expr v]
+value [boolean enableIgnore, boolean quoted]
     : '[' (collectionBuilder[$enableIgnore] { cb = $collectionBuilder.cb; } )? ']'
     | '{' (collectionBuilder[$enableIgnore] { cb = $collectionBuilder.cb; } )? '}'
     | STRING
@@ -282,7 +282,7 @@ value [boolean enableIgnore, boolean quoted] returns [Expr v]
     | {$enableIgnore}? '_'
     ;
 
-collectionBuilder [boolean enableIgnore] returns [CollectionBuilder cb]
+collectionBuilder [boolean enableIgnore]
     : /*iterator[$enableIgnore] '|' c2 = condition
     | */e1 = expr[$enableIgnore]
       (
@@ -346,9 +346,9 @@ RANGE_SIGN      : '..';
 STRING          : '"' ('\\'.|~('"'|'\\'))* '"';
 LITERAL         : '\'' ('\'\''|~('\''))* '\'';
 
-LINE_COMMENT    : '//' ~('\n' | '\r')*                      { skip(); } ;
-MULTI_COMMENT   : '/*' (~('*') | '*'+ ~('*'|'/'))* '*'+ '/' { skip(); } ;
-WS              : (' '|'\t'|'\n'|'\r')                      { skip(); } ;
+LINE_COMMENT    : '//' ~('\n' | '\r')*                      -> skip;
+MULTI_COMMENT   : '/*' (~('*') | '*'+ ~('*'|'/'))* '*'+ '/' -> skip;
+WS              : (' '|'\t'|'\n'|'\r')                      -> skip;
 
 /*
  * This is the desperate attempt at counting mismatched characters as errors
