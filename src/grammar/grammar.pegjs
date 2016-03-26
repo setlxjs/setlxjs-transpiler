@@ -31,21 +31,31 @@
   var MINUS = __operators.MINUS;
   var TIMES = __operators.TIMES;
   var DIVIDED_BY = __operators.DIVIDED_BY;
+
+  function Unsupported() {
+    throw new Exception("Unsupported Token");
+  }
 }
 
-Programm
-  = blk:Block WS
-    { return blk; }
-
-Block
+InitBlock
   = stmts:Statement+
     { return Block( stmts ); }
 
+Block
+  = stmts:Statement*
+    { return Block( stmts ); }
+
 Statement
-  = WS expr:(Assignment / Expression) WS ';'
-    { return Statement( expr ); }
+  = WS assign:AssignmentOther WS ';'
+    { return Statement( assign ); }
+  / WS assign:AssignmentDirect WS ';'
+    { return Statement( assign ); }
+  / WS expr:Expression WS ';'
+    { return Statement( expr )}
   / stmt:IfStmt
-    { return stmt; }
+    { return Unsupported(); }
+  / WS 'return' expr:Expression WS ';'
+    { return Unsupported(); }
 
 IfStmt
   = WS 'if' WS '(' WS cond:Expression WS ')' WS '{' WS blk:Block WS '}' WS
@@ -60,15 +70,41 @@ IfStmt
       return IfStmt(cond, blk, el[2][2] || el[2]);
     }
 
-Assignment
-  = id:ID WS ':=' WS expr:Expression
-    { return Assignment(id, expr); }
-  /*/ id:ID WS op:('+='/ '*=' / '-=' / '/=' / '%=' / '\\=') WS expr:Expression*/
-    /*{ return Assignment(id, getDirectAssignmentOp(op)(id, expr) ); }*/
+Variable
+  = id:ID
+    { return id; }
+
+AssignmentOther
+  = recv:Assignable WS op:('+='/ '*=' / '-=' / '/=' / '%=' / '\\=') WS expr:Expression
+    { return null; }
+
+AssignmentDirect
+  = recv:Assignable WS ':=' WS rhs:(AssignmentDirect / Expression)
+    { return Assignment(recv, rhs); }
+
+Assignable
+  = va:Variable
+    { return va; }
 
 Expression
-  = disj:Disjunction
-    { return disj; }
+  = lamb:LambdaProcedure
+    { return null; }
+  / i1:Implication i2:(('<==>' / '<!=>') Implication)?
+    { return null; }
+
+LambdaProcedure
+  = params:LambdaParameters op:('|->' / '|=>') expr:Expression
+    { return null; }
+
+LambdaParameters
+  = va:Variable
+    { return null; }
+  / '[' v1:Variable (',' v2:Variable )* ']'
+    { return null; }
+
+Implication
+  = disj:Disjunction impl:('=>' Implication)?
+    { return null; }
 
 Disjunction
   = conj1:Conjunction conj2:( WS '||' WS Conjunction )?
@@ -97,51 +133,75 @@ Sum
   = prod1:Product prod2:(
     WS ('+' { return PLUS; } / '-' { return MINUS; }) WS Product
   )?
-    {
-      if (!prod2) { return prod1 };
-      return Sum( prod2[1], prod1, prod2[3] );
-    }
+    { return prod2 ? Sum( prod2[1], prod1, prod2[3] ) : prod1 }
 
 Product
-  = infx1:InfixOperation infx2:(
-    WS ('*' { return TIMES; } / '/' { return DIVIDED_BY; }) WS InfixOperation
+  = red1:Reduce red2:(
+    WS ('*' { return TIMES; } / '/' { return DIVIDED_BY; }) WS Reduce
   )?
-    {
-      if (!infx2) { return infx1 };
-      return Product( infx2[1], infx1, infx2[3] );
-    }
+    { return red2 ? Product( red2[1], red1, red2[3] ) : return red1 }
 
-InfixOperation
-  = fact:Factor
-    { return fact; }
+Reduce
+  = PrefixOperation (WS ('+/' / '*/') WS PrefixOperation)*
+
+PrefixOperation
+  = Factor (WS '**' WS PrefixOperation)?
+  / '+/' WS PrefixOperation
+  / '*/' WS PrefixOperation
+  / '#'  WS PrefixOperation
+  / '-'  WS PrefixOperation
 
 Factor
-  = '(' WS expr:Expression WS ')'
-    { return expr; }
-  / sType:SomeType
-    { return sType; }
+  = '!' WS Factor
+  / (
+      '(' WS expr:Expression WS ')'
+    / Procedure
+    / Variable
+    )
+    ( Call )* ('!')?
+  / Value ('!')?
 
-TypeList
-  = type:SomeType more:( WS ',' WS SomeType WS )+
-    {
-      var types = more.map(e => e[3]);
-      types.unshift(type);
-      return types;
-    }
-  / type:SomeType?
-    { return type ? [type] : []; }
+Procedure
+  = 'procedure' WS '(' WS ProcedureParameters WS ')' WS '{' Block '}'
+  / 'closure' WS '(' WS ProcedureParameters WS ')' WS '{' Block '}'
 
-SomeType
-  = type:( Primitive / LIST / ID )
-    { return type; }
+ProcedureParameters
+  = Variable (WS ',' WS Variable)*
 
-Primitive
-  = primitive:( DOUBLE / NUMBER / STRING / BOOLEAN )
-    { return primitive; }
+Call
+  = '(' WS CallParameters WS ')'
+  / '[' WS CollectionAccessParams WS ']'
 
-LIST "list"
-  = '[' WS lst:TypeList WS ']'
-    { return List(lst); }
+CallParameters
+  = ExprList?
+
+CollectionAccessParams
+  = Expression
+  / Expression (WS ',' WS Expression)+
+  / Expression (WS RANGE_SIGN WS Expression)
+  / RANGE_SIGN Expression
+
+ExprList
+  = Expression (WS ',' WS Expression)
+
+Value
+  = '[' CollectionBuilder? ']'
+  / '{' CollectionBuilder? '}'
+  / STRING
+  / NUMBER
+  / DOUBLE
+  / BOOLEAN
+
+CollectionBuilder
+  = Expression (WS ',' WS Expression)?
+  / Expression WS RANGE_SIGN WS Expression
+  / Expression
+
+IteratorChain
+  = Iterator (WS ',' WS Iterator)*
+
+Iterator
+  = Assignable WS 'in' WS Expression
 
 ID "identifer"
   = [a-z][a-zA-Z_0-9]*
@@ -161,10 +221,14 @@ DOUBLE "double"
   = NUMBER? '.' [0-9]+([eE] ('+' / '-')? [0-9]+)?
     { return Primitive( DOUBLE, text() ); }
 
+RANGE_SIGN ".."
+  = '..'
+
 STRING "string"
   = '"' ('\\"' / [^\"])* '"'
     { return Primitive( STRING, text() ); }
 
 WS "whitespace"
-  = [ \t\n\r]*
+  = '//' [^\n\r]* '\n'
+  / [ \t\n\r]*
     { return false; }
