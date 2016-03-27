@@ -1,0 +1,77 @@
+load("graph-2-dot.stlx");
+// Some test comment
+
+/*
+ Multi Line here...
+*/
+
+findPath := procedure(x, y, r) {
+    p := { [x] }; // comment here...
+    while (true) {
+        oldP  := p;
+        p     := p + pathProduct(p, r);
+        found := { l : l in p | l[-1] == y };
+        if (found != {}) {
+            return arb(found);
+        }
+        if (p == oldP) {
+            return;
+        }
+    }
+};
+pathProduct := procedure(p, q) {
+    return { add(x,y) : x in p, y in q | x[-1] == y[1] && noCycle(x,y) };
+};
+noCycle := procedure(l1, l2) {
+    return #({ x : x in l1 } * { x : x in l2 }) == 1;
+};
+add := procedure(p, q) {
+    return p + [ q[2] ];
+};
+
+problem := procedure(s) {
+    return !("farmer" in s) &&
+           ("goat" in s && "cabbage" in s || "wolf" in s && "goat" in s);
+};
+
+all := { "farmer", "wolf", "goat", "cabbage" };
+p   := { s : s in 2 ** all | !problem(s) && !problem(all - s) };
+r1  := { [s, s - b]: s in p, b in 2 ** s
+                   | s - b in p && "farmer" in b && #b <= 2
+       };
+r2  := { [y, x] : [x, y] in r1 };
+r   := r1 + r2;
+
+start := all;
+goal  := {};
+
+path  := findPath(start, goal, r);
+
+mkPair := s |=> [s, all - s];
+graph  := { [mkPair(s1), mkPair(s2)] : [s1, s2] in r1 };
+graph2Dot(graph, mkPair(start), mkPair(goal), "wolf-goat-cabbage");
+
+printPath := procedure(path, all) {
+    for (i in [1 .. #path]) {
+        [s1, s2] := mkPair(path[i]);
+        if (#s1 == 0 || #s2 == 0) {
+            print(s1, 33 * " ", s2);
+        } else {
+            print(s1, 35 * " ", s2);
+        }
+        if (i == #path) {
+            break;
+        }
+        [t1, t2] := mkPair(path[i+1]);
+        if ("farmer" in s1) {
+            b := s1 - t1;
+            print("                         >>>> ", b, " >>>> " );
+        } else {
+            b := s2 - t2;
+            print("                         <<<< ", b, " <<<< " );
+        }
+    }
+};
+
+print("");
+printPath(path, all);

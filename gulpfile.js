@@ -28,6 +28,11 @@ gulp.task('test:grammar', () => {
     .pipe(mocha());
 });
 
+gulp.task('test:parser', () => {
+  gulp.src('test/grammar/parser.test.js')
+    .pipe(mocha());
+});
+
 gulp.task('watch', () => {
   gulp.watch(GRAMMAR_PATH, ['make:grammar']);
   gulp.watch(HELPER_PATH, ['make:helpers']);
