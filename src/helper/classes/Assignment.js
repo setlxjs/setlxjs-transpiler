@@ -8,7 +8,7 @@ class Assignment {
   }
 
   toString() {
-    return 'Assignment( ' + this.receiver + ', ' + this.expression + ' )';
+    return `Assignment( ${ this.receiver }, ${ this.expression } )`;
   }
 }
 
