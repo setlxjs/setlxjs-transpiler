@@ -1,234 +1,315 @@
 {
-  var Primitive = require('../classes/Primitive');
-  var List = require('../classes/List');
-  var IfStmt = require('../classes/IfStmt');
-  var Block = require('../classes/Block');
+  var AssignableList = require('../classes/AssignableList');
   var Assignment = require('../classes/Assignment');
-  var Identifer = require('../classes/Identifer');
-  var Statement = require('../classes/Statement');
-  var Disjunction = require('../classes/Disjunction');
-  var Conjunction = require('../classes/Conjunction');
+  var Block = require('../classes/Block');
+  var Call = require('../classes/Call');
   var Comparison = require('../classes/Comparison');
-  var Sum = require('../classes/Sum');
+  var Conjunction = require('../classes/Conjunction');
+  var CollectionAccess = require('../classes/CollectionAccess');
+  var Disjunction = require('../classes/Disjunction');
+  var Exponential = require('../classes/Exponential');
+  var ForLoop = require('../classes/ForLoop');
+  var FunctionCall = require('../classes/FunctionCall');
+  var Generator = require('../classes/Generator');
+  var Identifer = require('../classes/Identifer');
+  var IfStmt = require('../classes/IfStmt');
+  var Iterator = require('../classes/Iterator');
+  var List = require('../classes/List');
+  var PrefixOperation = require('../classes/PrefixOperation');
+  var Primitive = require('../classes/Primitive');
+  var Procedure = require('../classes/Procedure');
   var Product = require('../classes/Product');
+  var Range = require('../classes/Range');
+  var Return = require('../classes/Return');
+  var SetlSet = require('../classes/SetlSet');
+  var Statement = require('../classes/Statement');
+  var Sum = require('../classes/Sum');
+  var WhileLoop = require('../classes/WhileLoop');
 
-  var __types = require('../constants/types');
-  var INTEGER = __types.INTEGER;
-  var STRING = __types.STRING;
-  var DOUBLE = __types.DOUBLE;
-  var BOOLEAN = __types.BOOLEAN;
+  var types = require('../constants/types');
 
-  var __operators = require('../constants/operators');
-  var EQUAL = __operators.EQUAL;
-  var NOT_EQUAL = __operators.NOT_EQUAL;
-  var GREATER_THAN = __operators.GREATER_THAN;
-  var LESS_THAN = __operators.LESS_THAN;
-  var GREATER_EQUAL_THAN = __operators.GREATER_EQUAL_THAN;
-  var LESS_EQUAL_THAN = __operators.LESS_EQUAL_THAN;
-  var IS_IN = __operators.IS_IN;
-  var IS_NOT_IN = __operators.IS_NOT_IN;
-  var PLUS = __operators.PLUS;
-  var MINUS = __operators.MINUS;
-  var TIMES = __operators.TIMES;
-  var DIVIDED_BY = __operators.DIVIDED_BY;
+  var ops = require('../constants/operators');
 
-  function Unsupported() {
-    throw new Exception("Unsupported Token");
+  function makeList(first, second) {
+    var ret = [];
+    if (second) {
+      ret = second.map(function(el) {
+        return el[3];
+      });
+    }
+    ret.unshift(first);
+    return ret;
+  }
+
+  function reduceApply(p, n) {
+    return n(p);
   }
 }
 
 InitBlock
-  = stmts:Statement+
-    { return Block( stmts ); }
+  = stmts:Statement+ WS
+    { return Block(stmts); }
 
 Block
-  = stmts:Statement*
-    { return Block( stmts ); }
+  = stmts:Statement* WS
+    { return Block(stmts); }
 
 Statement
   = WS assign:AssignmentOther WS ';'
-    { return Statement( assign ); }
+    { return Statement(assign); }
   / WS assign:AssignmentDirect WS ';'
-    { return Statement( assign ); }
+    { return Statement(assign); }
   / WS expr:Expression WS ';'
-    { return Statement( expr )}
-  / stmt:IfStmt
-    { return Unsupported(); }
-  / WS 'return' expr:Expression WS ';'
-    { return Unsupported(); }
-
-IfStmt
-  = WS 'if' WS '(' WS cond:Expression WS ')' WS '{' WS blk:Block WS '}' WS
-    el:(
-      'else' WS (elif:IfStmt / '{' WS elblk:Block WS '}') WS
-    )?
-    {
-      if(!el) {
-        return IfStmt(cond, blk);
-      }
-      // el[2][2] is the block when defined, or er[2] the if statement...
-      return IfStmt(cond, blk, el[2][2] || el[2]);
-    }
+    { return Statement(expr); }
+  / WS 'for' WS '(' iterators:IteratorChain expr:('|' Expression )? ')' WS '{' blk:Block '}'
+    { return ForLoop(iterators, expr, blk); }
+  / WS 'while' WS '(' expr:Expression ')' WS '{' blk:Block '}'
+    { return WhileLoop(expr, blk); }
+  / WS 'if' WS '(' WS expr:Expression WS ')' WS '{' blk:Block '}'
+    elseif:(WS 'else' WS 'if' WS '(' WS expr:Expression ')' WS '{' blk:Block '}'
+      { return function(elseblk) { return IfStmt(expr, blk, elseblk)}; }
+    )*
+    elseblk:(WS 'else' WS '{' blk:Block '}' { return blk; })?
+    { return IfStmt(expr, blk, elseif.reduceRight(reduceApply, elseblk)); }
+  / WS 'return' WS expr:Expression? WS ';'
+    { return Return(expr); }
 
 Variable
   = id:ID
     { return id; }
 
 AssignmentOther
-  = recv:Assignable WS op:('+='/ '*=' / '-=' / '/=' / '%=' / '\\=') WS expr:Expression
-    { return null; }
+  = asable:Assignable WS op:(
+      '+='  { return ops.PLUS;             }
+    / '*='  { return ops.TIMES;            }
+    / '-='  { return ops.MINUS;            }
+    / '/='  { return ops.DIVIDED_BY;       }
+    / '%='  { return ops.MODULO;           }
+    / '\\=' { return ops.INTEGER_DIVISION; }
+    ) WS expr:Expression
+    {
+      if (op === ops.PLUS || op === ops.MINUS) {
+        return Assignment(asable, Sum(asable, op, expr));
+      }
+      return Assignment(asable, Product(asable, op, expr));
+    }
 
 AssignmentDirect
-  = recv:Assignable WS ':=' WS rhs:(AssignmentDirect / Expression)
-    { return Assignment(recv, rhs); }
+  = asable:Assignable WS ':=' WS expr:(AssignmentDirect / Expression)
+    { return Assignment(asable, expr); }
 
 Assignable
-  = va:Variable
-    { return va; }
+  = vari:Variable
+    { return vari;  }
+  / '[' WS aslist:ExplicitAssignList WS ']'
+    { return aslist; }
+
+ExplicitAssignList
+  = as1:Assignable as2:(WS ',' WS Assignable)*
+    { return AssignableList(makeList(as1, as2)); }
 
 Expression
-  = lamb:LambdaProcedure
-    { return null; }
-  / i1:Implication i2:(('<==>' / '<!=>') Implication)?
-    { return null; }
+  = pro:LambdaProcedure
+    { return pro; }
+  / i1:Implication i2:(WS (
+      '<==>' { return ops.IF_ONLY_IF }
+    / '<!=>' { return ops.NOT_IF_ONLY_IF; }
+    ) WS Implication)?
+    { return i2 ? Implication(i2[1], i1, i2[3]) : i1; }
 
 LambdaProcedure
-  = params:LambdaParameters op:('|->' / '|=>') expr:Expression
-    { return null; }
+  = params:LambdaParameters WS
+      clos:('|->' { return true; } / '|=>' { return false; })
+    WS expr:Expression
+    { return Procedure(params, Block(Statement(expr)), clos); }
 
 LambdaParameters
-  = va:Variable
-    { return null; }
-  / '[' v1:Variable (',' v2:Variable )* ']'
-    { return null; }
+  = vari:Variable
+    { return [vari]; }
+  / '[' WS v1:Variable v2:(WS ',' WS Variable )* WS ']'
+    { return makeList(v1, v2); }
 
 Implication
-  = disj:Disjunction impl:('=>' Implication)?
-    { return null; }
+  = dis:Disjunction impl:(WS '=>' WS Implication)?
+    { return impl ? Implication(ops.IMPLIES, dis, impl[3]) : dis; }
 
 Disjunction
-  = conj1:Conjunction conj2:( WS '||' WS Conjunction )?
-    { return conj2 ? Disjunction(conj1, conj2[3]) : conj1; }
+  = con1:Conjunction disj:(WS '||' WS con2:Conjunction
+      { return function(lhs) { return Disjunction(lhs, con2); }; }
+    )*
+    { return disj.reduce(reduceApply, con1); }
 
 Conjunction
-  = comp1:Comparison comp2:( WS '&&' WS Comparison )?
-    { return comp2 ? Conjunction(comp1, comp2[3]) : comp1; }
+  = comp1:Comparison conj:(WS '&&' WS comp2:Comparison
+      { return function(lhs) { return Conjunction(lhs, comp2); }; }
+    )*
+    { return conj.reduce(reduceApply, comp1); }
 
 Comparison
-  = sum1:Sum sum2:( WS
-  (
-      '=='    { return EQUAL; }
-    / '!='    { return NOT_EQUAL; }
-    / '>='    { return GREATER_EQUAL_THAN; }
-    / '<='    { return LESS_EQUAL_THAN; }
-    / '>'     { return GREATER_THAN; }
-    / '<'     { return LESS_THAN; }
-    / 'in'    { return IS_IN; }
-    / 'notin' { return IS_NOT_IN; }
-  )
-  WS Sum )?
-    { return sum2 ? Comparison( sum2[1], sum2[3], sum1 ) : sum1; }
+  = s1:Sum s2:(WS (
+      '=='    { return ops.EQUAL;              }
+    / '!='    { return ops.NOT_EQUAL;          }
+    / '>='    { return ops.GREATER_EQUAL_THAN; }
+    / '<='    { return ops.LESS_EQUAL_THAN;    }
+    / '>'     { return ops.GREATER_THAN;       }
+    / '<'     { return ops.LESS_THAN;          }
+    / 'in'    { return ops.IS_IN;              }
+    / 'notin' { return ops.IS_NOT_IN;          }
+    ) WS Sum)?
+    { return s2 ? Comparison(s2[1], s1, s2[3]) : s1; }
 
 Sum
-  = prod1:Product prod2:(
-    WS ('+' { return PLUS; } / '-' { return MINUS; }) WS Product
-  )?
-    { return prod2 ? Sum( prod2[1], prod1, prod2[3] ) : prod1 }
+  = p1:Product sum:(WS op:(
+      '+' { return ops.PLUS; }
+    / '-' { return ops.MINUS; }
+    ) WS p2:Product { return function(lhs) { return Sum(op, lhs, p2); }; })*
+    { return sum ? sum.reduce(reduceApply, p1) : p1; }
 
 Product
-  = red1:Reduce red2:(
-    WS ('*' { return TIMES; } / '/' { return DIVIDED_BY; }) WS Reduce
-  )?
-    { return red2 ? Product( red2[1], red1, red2[3] ) : return red1 }
+  = r1:Reduce prod:(WS op:(
+      '*'  { return ops.TIMES; }
+    / '/'  { return ops.DIVIDED_BY; }
+    / '%'  { return ops.MODULO; }
+    / '\\' { return ops.INTEGER_DIVISION; }
+    ) WS r2:Reduce { return function(lhs) { return Product(op, lhs, r2); }; })*
+    { return prod ? prod.reduce(reduceApply, r1) : r1; }
 
 Reduce
-  = PrefixOperation (WS ('+/' / '*/') WS PrefixOperation)*
+  = pre:PrefixOperation // (WS ('+/' / '*/') WS PrefixOperation)*
+    // I don't get this rule, will be implemented when clear
+    { return pre; }
 
 PrefixOperation
-  = Factor (WS '**' WS PrefixOperation)?
-  / '+/' WS PrefixOperation
-  / '*/' WS PrefixOperation
-  / '#'  WS PrefixOperation
-  / '-'  WS PrefixOperation
+  = f1:Factor f2:(WS '**' WS PrefixOperation)?
+    { return f2 ? Exponential(f1, f2) : f1; }
+  / '+/' WS pre:PrefixOperation
+    { return PrefixOperation(pre, ops.PREFIX_PLUS); }
+  / '*/' WS pre:PrefixOperation
+    { return PrefixOperation(pre, ops.PREFIX_TIMES); }
+  / '#'  WS pre:PrefixOperation
+    { return PrefixOperation(pre, ops.PREFIX_LENGTH); }
+  / '-'  WS pre:PrefixOperation
+    { return PrefixOperation(pre, ops.PREFIX_MINUS); }
 
 Factor
-  = '!' WS Factor
-  / (
-      '(' WS expr:Expression WS ')'
-    / Procedure
-    / Variable
-    )
-    ( Call )* ('!')?
-  / Value ('!')?
+  = '!' WS fact:Factor
+    { return PrefixOperation(ops.PREFIX_NOT, fact)}
+  / receiv:(
+      '(' WS expr:Expression WS ')' { return expr; }
+    / proc:Procedure                { return proc; }
+    / vari:Variable                 { return vari; }
+    ) calls:( Call )* factorial:('!')?
+    {
+      var ret = calls.reduce(function(p, call) {
+        return Call(p, call);
+      }, receiv);
+
+      return factorial ? Factorial(ret) : ret;
+    }
+  / vali:Value WS factorial:('!')?
+    { return factorial ? Factorial(vali) : vali; }
 
 Procedure
-  = 'procedure' WS '(' WS ProcedureParameters WS ')' WS '{' Block '}'
+  = 'procedure' WS '(' WS params:ProcedureParameters WS ')' WS '{' blk:Block '}'
+    { return Procedure(params, blk); }
   / 'closure' WS '(' WS ProcedureParameters WS ')' WS '{' Block '}'
+    { return Procedure(params, blk, true); }
 
 ProcedureParameters
-  = Variable (WS ',' WS Variable)*
+  = v1:Variable v2:(WS ',' WS Variable)*
+    { return makeList(v1, v2); }
 
 Call
-  = '(' WS CallParameters WS ')'
-  / '[' WS CollectionAccessParams WS ']'
+  = '(' WS params:CallParameters WS ')'
+    { return FunctionCall(params); }
+  / '[' WS acc:CollectionAccessParams WS ']'
+    { return CollectionAccess(acc); }
 
 CallParameters
-  = ExprList?
+  = exprl:ExprList?
+    { return exprl || []; }
 
 CollectionAccessParams
-  = Expression
-  / Expression (WS ',' WS Expression)+
-  / Expression (WS RANGE_SIGN WS Expression)
-  / RANGE_SIGN Expression
+  = expr:Expression
+    { return expr; }
+  / expr1:Expression expr2:(WS ',' WS Expression)+
+    { return makeList(expr1, expr2); }
+  / expr1:Expression WS RANGE_SIGN WS expr2:Expression
+    { return Range(expr1, expr2); }
+  / RANGE_SIGN expr:Expression
+    { return Range(Primitive(types.INTEGER, 0), expr); }
 
 ExprList
-  = Expression (WS ',' WS Expression)
+  = expr1:Expression expr2:(WS ',' WS Expression)*
+    { return makeList(expr1, expr2); }
 
 Value
-  = '[' CollectionBuilder? ']'
-  / '{' CollectionBuilder? '}'
-  / STRING
-  / NUMBER
-  / DOUBLE
-  / BOOLEAN
+  = '[' WS builder:CollectionBuilder? WS ']'
+    { return builder ? List(builder) : List(); }
+  / '{' WS builder:CollectionBuilder? WS '}'
+    { return builder ? SetlSet(builder) : SetlSet(); }
+  / prim:(STRING / NUMBER / DOUBLE / BOOLEAN)
+    { return prim; }
 
 CollectionBuilder
-  = Expression (WS ',' WS Expression)?
-  / Expression WS RANGE_SIGN WS Expression
-  / Expression
+  = expr1:Expression make:(
+      exprs:(WS ',' WS Expression)+
+        {
+          var ret = exprs.map(function(expr) { return expr[3]; });
+          return function(expr) {
+            ret.unshift(expr);
+            return ret;
+          }
+        }
+    / WS RANGE_SIGN WS expr2:Expression
+      { return function(expr1) { return Range(expr1, expr2); }; }
+    / WS ':' WS chain:IteratorChain expr2:(WS '|' WS Expression)?
+      { return function(expr1) { return Generator(chain, (expr2 || [])[3]); }; }
+    )?
+    { return make ? make() : expr1; }
 
 IteratorChain
-  = Iterator (WS ',' WS Iterator)*
+  = it1:Iterator it2:(WS ',' WS Iterator)*
+    { return makeList(it1, it2); }
 
 Iterator
-  = Assignable WS 'in' WS Expression
+  = as:Assignable WS 'in' WS expr:Expression
+    { return Iterator(as, expr); }
 
 ID "identifer"
   = [a-z][a-zA-Z_0-9]*
-    { return Identifer( text() ); }
+    { return Identifer(text()); }
 
 BOOLEAN "bool"
-  = ('true' / 'false')
-    { return Primitive( BOOLEAN, text() ); }
+  = val:('true' / 'false')
+    { return Primitive(types.BOOLEAN, text()); }
 
 NUMBER "number"
   = '0'
-    { return Primitive( INTEGER, 0 ); }
+    { return Primitive(types.INTEGER, 0); }
   / [1-9][0-9]*
-    { return Primitive( INTEGER, parseInt(text(), 10) ); }
+    { return Primitive(types.INTEGER, parseInt(text(), 10)); }
 
 DOUBLE "double"
   = NUMBER? '.' [0-9]+([eE] ('+' / '-')? [0-9]+)?
-    { return Primitive( DOUBLE, text() ); }
+    { return Primitive(types.DOUBLE, text()); }
 
 RANGE_SIGN ".."
   = '..'
 
 STRING "string"
   = '"' ('\\"' / [^\"])* '"'
-    { return Primitive( STRING, text() ); }
+    { return Primitive(types.STRING, text()); }
+
+LINE_TERMINATOR
+  = '\n' / '\r\n' / '\r'
+
+SINGLE_LINE_COMMENT
+  = '//' (!LINE_TERMINATOR .)* LINE_TERMINATOR
+
+MULTI_LINE_COMMENT
+  = '/*' (!'*/' .)* '*/'
 
 WS "whitespace"
-  = '//' [^\n\r]* '\n'
-  / [ \t\n\r]*
-    { return false; }
+  = (SINGLE_LINE_COMMENT / MULTI_LINE_COMMENT / [ \t\n\r])*
+    { return null; }

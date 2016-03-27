@@ -1,16 +1,16 @@
 import { LIST } from '../constants/tokens';
 
 class List {
-  constructor( elements ) {
+  constructor( builder ) {
     this.token = LIST;
-    this.elements = elements;
+    this.builder = builder;
   }
 
   toString() {
-    return `List( ${ this.elements.join(', ') } )`;
+    return this.builder ? `List( ${ this.builder } )` : 'List()';
   }
 }
 
-export default function creator( elements ) {
-  return new List( elements );
+export default function creator( builder ) {
+  return new List( builder );
 }
