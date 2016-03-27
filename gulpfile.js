@@ -8,7 +8,7 @@ const HELPER_PATH = 'src/helper/**/*.js';
 
 gulp.task('make:grammar', () => {
   gulp.src(GRAMMAR_PATH)
-    .pipe(peg({ allowedStartRules: ['Programm', 'Statement'] }))
+    .pipe(peg({ allowedStartRules: ['InitBlock'] }))
     .pipe(gulp.dest('build/grammar/'));
 });
 
