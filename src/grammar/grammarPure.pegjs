@@ -1,145 +1,64 @@
-{
-  var Primitive = require('../classes/Primitive');
-  var List = require('../classes/List');
-  var IfStmt = require('../classes/IfStmt');
-  var Block = require('../classes/Block');
-  var Assignment = require('../classes/Assignment');
-  var Identifer = require('../classes/Identifer');
-  var Statement = require('../classes/Statement');
-  var Disjunction = require('../classes/Disjunction');
-  var Conjunction = require('../classes/Conjunction');
-  var Comparison = require('../classes/Comparison');
-  var Sum = require('../classes/Sum');
-  var Product = require('../classes/Product');
-
-  var __types = require('../constants/types');
-  var INTEGER = __types.INTEGER;
-  var STRING = __types.STRING;
-  var DOUBLE = __types.DOUBLE;
-  var BOOLEAN = __types.BOOLEAN;
-
-  var __operators = require('../constants/operators');
-  var EQUAL = __operators.EQUAL;
-  var NOT_EQUAL = __operators.NOT_EQUAL;
-  var GREATER_THAN = __operators.GREATER_THAN;
-  var LESS_THAN = __operators.LESS_THAN;
-  var GREATER_EQUAL_THAN = __operators.GREATER_EQUAL_THAN;
-  var LESS_EQUAL_THAN = __operators.LESS_EQUAL_THAN;
-  var IS_IN = __operators.IS_IN;
-  var IS_NOT_IN = __operators.IS_NOT_IN;
-  var PLUS = __operators.PLUS;
-  var MINUS = __operators.MINUS;
-  var TIMES = __operators.TIMES;
-  var DIVIDED_BY = __operators.DIVIDED_BY;
-
-  function Unsupported() {
-    throw new Exception("Unsupported Token");
-  }
-}
-
 InitBlock
-  = stmts:Statement+
-    { return Block( stmts ); }
+  = Statement+ WS
 
 Block
-  = stmts:Statement*
-    { return Block( stmts ); }
+  = Statement* WS
 
 Statement
-  = WS assign:AssignmentOther WS ';'
-    { return Statement( assign ); }
-  / WS assign:AssignmentDirect WS ';'
-    { return Statement( assign ); }
-  / WS expr:Expression WS ';'
-    { return Statement( expr )}
-  / stmt:IfStmt
-    { return Unsupported(); }
-  / WS 'return' expr:Expression WS ';'
-    { return Unsupported(); }
-
-IfStmt
-  = WS 'if' WS '(' WS cond:Expression WS ')' WS '{' WS blk:Block WS '}' WS
-    el:(
-      'else' WS (elif:IfStmt / '{' WS elblk:Block WS '}') WS
-    )?
-    {
-      if(!el) {
-        return IfStmt(cond, blk);
-      }
-      // el[2][2] is the block when defined, or er[2] the if statement...
-      return IfStmt(cond, blk, el[2][2] || el[2]);
-    }
+  = WS AssignmentOther WS ';'
+  / WS AssignmentDirect WS ';'
+  / WS Expression WS ';'
+  / WS 'for' WS '(' IteratorChain ('|' Expression )? ')' WS '{' Block '}'
+  / WS 'while' WS '(' Expression ')' WS '{' Block '}'
+  / WS 'if' WS '(' WS Expression WS ')' WS '{' Block '}'
+    (WS 'else' WS 'if' WS '(' WS Expression ')' WS '{' Block '}')*
+    (WS 'else' WS '{' Block '}')?
+  / WS 'return' WS Expression WS ';'
 
 Variable
-  = id:ID
-    { return id; }
+  = ID
 
 AssignmentOther
-  = recv:Assignable WS op:('+='/ '*=' / '-=' / '/=' / '%=' / '\\=') WS expr:Expression
-    { return null; }
+  = Assignable WS ('+='/ '*=' / '-=' / '/=' / '%=' / '\\=') WS Expression
 
 AssignmentDirect
-  = recv:Assignable WS ':=' WS rhs:(AssignmentDirect / Expression)
-    { return Assignment(recv, rhs); }
+  = Assignable WS ':=' WS (AssignmentDirect / Expression)
 
 Assignable
-  = va:Variable
-    { return va; }
+  = Variable
+  / '[' WS ExplicitAssignList WS ']'
+
+ExplicitAssignList
+  = Assignable (WS ',' WS Assignable)*
 
 Expression
-  = lamb:LambdaProcedure
-    { return null; }
-  / i1:Implication i2:(('<==>' / '<!=>') Implication)?
-    { return null; }
+  = LambdaProcedure
+  / Implication (WS ('<==>' / '<!=>') WS Implication)?
 
 LambdaProcedure
-  = params:LambdaParameters op:('|->' / '|=>') expr:Expression
-    { return null; }
+  = LambdaParameters WS ('|->' / '|=>') WS Expression
 
 LambdaParameters
-  = va:Variable
-    { return null; }
-  / '[' v1:Variable (',' v2:Variable )* ']'
-    { return null; }
+  = Variable
+  / '[' WS Variable (WS ',' WS Variable )* WS ']'
 
 Implication
-  = disj:Disjunction impl:('=>' Implication)?
-    { return null; }
+  = Disjunction (WS '=>' WS Implication)?
 
 Disjunction
-  = conj1:Conjunction conj2:( WS '||' WS Conjunction )?
-    { return conj2 ? Disjunction(conj1, conj2[3]) : conj1; }
+  = Conjunction (WS '||' WS Conjunction )*
 
 Conjunction
-  = comp1:Comparison comp2:( WS '&&' WS Comparison )?
-    { return comp2 ? Conjunction(comp1, comp2[3]) : comp1; }
+  = Comparison (WS '&&' WS Comparison )*
 
 Comparison
-  = sum1:Sum sum2:( WS
-  (
-      '=='    { return EQUAL; }
-    / '!='    { return NOT_EQUAL; }
-    / '>='    { return GREATER_EQUAL_THAN; }
-    / '<='    { return LESS_EQUAL_THAN; }
-    / '>'     { return GREATER_THAN; }
-    / '<'     { return LESS_THAN; }
-    / 'in'    { return IS_IN; }
-    / 'notin' { return IS_NOT_IN; }
-  )
-  WS Sum )?
-    { return sum2 ? Comparison( sum2[1], sum2[3], sum1 ) : sum1; }
+  = Sum (WS ('==' / '!=' / '>=' / '<=' / '>' / '<' / 'in' / 'notin') WS Sum)?
 
 Sum
-  = prod1:Product prod2:(
-    WS ('+' { return PLUS; } / '-' { return MINUS; }) WS Product
-  )?
-    { return prod2 ? Sum( prod2[1], prod1, prod2[3] ) : prod1 }
+  = Product (WS ('+' / '-') WS Product)?
 
 Product
-  = red1:Reduce red2:(
-    WS ('*' { return TIMES; } / '/' { return DIVIDED_BY; }) WS Reduce
-  )?
-    { return red2 ? Product( red2[1], red1, red2[3] ) : return red1 }
+  = Reduce (WS ('*' / '/') WS Reduce)?
 
 Reduce
   = PrefixOperation (WS ('+/' / '*/') WS PrefixOperation)*
@@ -153,13 +72,8 @@ PrefixOperation
 
 Factor
   = '!' WS Factor
-  / (
-      '(' WS expr:Expression WS ')'
-    / Procedure
-    / Variable
-    )
-    ( Call )* ('!')?
-  / Value ('!')?
+  / ('(' WS Expression WS ')' / Procedure / Variable) ( Call )* ('!')?
+  / Value WS ('!')?
 
 Procedure
   = 'procedure' WS '(' WS ProcedureParameters WS ')' WS '{' Block '}'
@@ -182,20 +96,22 @@ CollectionAccessParams
   / RANGE_SIGN Expression
 
 ExprList
-  = Expression (WS ',' WS Expression)
+  = Expression (WS ',' WS Expression)*
 
 Value
-  = '[' CollectionBuilder? ']'
-  / '{' CollectionBuilder? '}'
+  = '[' WS CollectionBuilder? WS ']'
+  / '{' WS CollectionBuilder? WS '}'
   / STRING
   / NUMBER
   / DOUBLE
   / BOOLEAN
 
 CollectionBuilder
-  = Expression (WS ',' WS Expression)?
-  / Expression WS RANGE_SIGN WS Expression
-  / Expression
+  = Expression (
+      (WS ',' WS Expression)+
+    / WS RANGE_SIGN WS Expression
+    / WS ':' WS IteratorChain() (WS '|' WS Expression)?
+    )?
 
 IteratorChain
   = Iterator (WS ',' WS Iterator)*
@@ -205,30 +121,30 @@ Iterator
 
 ID "identifer"
   = [a-z][a-zA-Z_0-9]*
-    { return Identifer( text() ); }
 
 BOOLEAN "bool"
   = ('true' / 'false')
-    { return Primitive( BOOLEAN, text() ); }
 
 NUMBER "number"
-  = '0'
-    { return Primitive( INTEGER, 0 ); }
-  / [1-9][0-9]*
-    { return Primitive( INTEGER, parseInt(text(), 10) ); }
+  = '0' / [1-9][0-9]*
 
 DOUBLE "double"
   = NUMBER? '.' [0-9]+([eE] ('+' / '-')? [0-9]+)?
-    { return Primitive( DOUBLE, text() ); }
 
 RANGE_SIGN ".."
   = '..'
 
 STRING "string"
   = '"' ('\\"' / [^\"])* '"'
-    { return Primitive( STRING, text() ); }
+
+LINE_TERMINATOR
+  = '\n' / '\r\n' / '\r'
+
+SINGLE_LINE_COMMENT
+  = '//' (!LINE_TERMINATOR .)* LINE_TERMINATOR
+
+MULTI_LINE_COMMENT
+  = '/*' (!'*/' .)* '*/'
 
 WS "whitespace"
-  = '//' [^\n\r]* '\n'
-  / [ \t\n\r]*
-    { return false; }
+  = (SINGLE_LINE_COMMENT / MULTI_LINE_COMMENT / [ \t\n\r])*
