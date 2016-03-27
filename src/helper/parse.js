@@ -1,5 +1,5 @@
-import { parse } from './grammar/grammarPure';
+import { parse } from './grammar/grammar';
 
-export default function transpiler( fileContent ) {
-  parse( fileContent );
+export default function parser( fileContent ) {
+  return parse( fileContent );
 }
