@@ -7,7 +7,7 @@ class Block {
   }
 
   toString() {
-    return `Block(\n ${ this.statements.join(',\n') }\n)`;
+    return `Block(\n  ${ this.statements.join(',\n  ') }\n)`;
   }
 }
 
