@@ -1,4 +1,5 @@
 import { BLOCK } from '../constants/tokens';
+import indent from '../util/indent';
 
 class Block {
   constructor( statements ) {
@@ -7,7 +8,7 @@ class Block {
   }
 
   toString() {
-    return `Block(\n  ${ this.statements.join(',\n  ') }\n)`;
+    return `Block(\n${ indent(2, this.statements.join(',\n')) }\n)`;
   }
 }
 

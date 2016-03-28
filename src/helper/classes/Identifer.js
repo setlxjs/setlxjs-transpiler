@@ -7,7 +7,7 @@ class Identifer {
   }
 
   toString() {
-    return 'Identifer()';
+    return 'Identifer';
   }
 }
 
