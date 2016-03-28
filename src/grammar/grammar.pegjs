@@ -194,6 +194,8 @@ PrefixOperation
 Factor
   = '!' WS fact:Factor
     { return PrefixOperation(ops.PREFIX_NOT, fact)}
+  / vali:Value WS factorial:('!')?
+    { return factorial ? Factorial(vali) : vali; }
   / receiv:(
       '(' WS expr:Expression WS ')' { return expr; }
     / proc:Procedure                { return proc; }
@@ -206,8 +208,6 @@ Factor
 
       return factorial ? Factorial(ret) : ret;
     }
-  / vali:Value WS factorial:('!')?
-    { return factorial ? Factorial(vali) : vali; }
 
 Procedure
   = 'procedure' WS '(' WS params:ProcedureParameters WS ')' WS '{' blk:Block '}'
@@ -248,7 +248,7 @@ Value
     { return builder ? List(builder) : List(); }
   / '{' WS builder:CollectionBuilder? WS '}'
     { return builder ? SetlSet(builder) : SetlSet(); }
-  / prim:(STRING / NUMBER / DOUBLE / BOOLEAN)
+  / prim:(STRING /  DOUBLE / NUMBER / BOOLEAN)
     { return prim; }
 
 CollectionBuilder
@@ -276,13 +276,13 @@ Iterator
   = as:Assignable WS 'in' WS expr:Expression
     { return Iterator(as, expr); }
 
+BOOLEAN "bool"
+  = ('true' / 'false')
+    { return Primitive(types.BOOLEAN, text() === 'true'); }
+
 ID "identifer"
   = [a-z][a-zA-Z_0-9]*
     { return Identifer(text()); }
-
-BOOLEAN "bool"
-  = val:('true' / 'false')
-    { return Primitive(types.BOOLEAN, text()); }
 
 NUMBER "number"
   = '0'
