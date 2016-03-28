@@ -1,5 +1,5 @@
-var parser = require('build/parse');
-var transpiler = require('build/index');
+var parser = require('./build/parse');
+var transpiler = require('./build/index');
 
 module.exports = function transpiler(input, options, cb) {
   var callback, opts, promise, out;
@@ -15,7 +15,7 @@ module.exports = function transpiler(input, options, cb) {
   if (opts.tree) {
     try {
       out = parser(input);
-      promise = new Promise.resolve(out);
+      promise = Promise.resolve(out);
     } catch (error) {
       promise = Promise.reject(error);
     }
