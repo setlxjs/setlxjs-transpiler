@@ -1,0 +1,72 @@
+require('should');
+const Block = require('../../build/classes/Block');
+const Statement = require('../../build/classes/Statement');
+const Identifer = require('../../build/classes/Identifer');
+const Call = require('../../build/classes/Call');
+const FunctionCall = require('../../build/classes/FunctionCall');
+const CollectionAccess = require('../../build/classes/CollectionAccess');
+const Primitive = require('../../build/classes/Primitive');
+const Range = require('../../build/classes/Range');
+const Product = require('../../build/classes/Product');
+const Return = require('../../build/classes/Return');
+const Procedure = require('../../build/classes/Procedure');
+
+const types = require('../../build/constants/types');
+const ops = require('../../build/constants/operators');
+
+const parser = require('../../build/parse');
+
+function int(number) {
+  return Primitive(types.INTEGER, number);
+}
+
+function makeStmt(expr) {
+  return Block([Statement(expr)]);
+}
+
+describe('Call', () => {
+  it('should parse collection access calls', () => {
+    parser('mycollection[1];').should.eql(makeStmt(
+      Call(Identifer('mycollection'), CollectionAccess(int(1)))
+    ));
+
+    parser('mycollection[2..5];').should.eql(makeStmt(
+      Call(Identifer('mycollection'), CollectionAccess(Range(int(2), int(5))))
+    ));
+
+    parser('mycollection[1..6];').should.eql(makeStmt(
+      Call(Identifer('mycollection'), CollectionAccess(Range(int(1), int(6))))
+    ));
+  });
+
+  it('should parse function calls', () => {
+    parser('myfunction();').should.eql(makeStmt(
+      Call(Identifer('myfunction'), FunctionCall([]))
+    ));
+
+    parser('myfunction(1);').should.eql(makeStmt(
+      Call(Identifer('myfunction'), FunctionCall([int(1)]))
+    ));
+
+    parser('myfunction(2 * 3);').should.eql(makeStmt(
+      Call(
+        Identifer('myfunction'),
+        FunctionCall([Product(ops.TIMES, int(2), int(3))])
+      )
+    ));
+  });
+
+  it('should parse direct procedure calls', () => {
+    parser('procedure(a, b) { return a * b; }(2, 5);').should.eql(makeStmt(
+      Call(
+        Procedure(
+          [Identifer('a'), Identifer('b')],
+          Block([
+            Return(Product(ops.TIMES, Identifer('a'), Identifer('b'))),
+          ])
+        ),
+        FunctionCall([int(2), int(5)])
+      )
+    ));
+  });
+});

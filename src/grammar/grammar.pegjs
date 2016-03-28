@@ -230,11 +230,21 @@ CallParameters
     { return exprl || []; }
 
 CollectionAccessParams
-  = expr:Expression
-    { return expr; }
-  / expr1:Expression expr2:(WS ',' WS Expression)+
+  = expr:Expression more:(
+      exprl:(WS ',' WS expr2:Expression { return expr; })+
+      {
+        return function(expr1) {
+          exprl.unshift(expr1);
+          return exprl;
+        }
+      }
+    / WS RANGE_SIGN WS expr2:Expression
+      { return function(expr1) { return Range(expr1, expr2); }; }
+    )?
+    { return more ? more(expr) : expr; }
+  / expr1:Expression
     { return makeList(expr1, expr2); }
-  / expr1:Expression WS RANGE_SIGN WS expr2:Expression
+  / expr1:Expression
     { return Range(expr1, expr2); }
   / RANGE_SIGN expr:Expression
     { return Range(Primitive(types.INTEGER, 0), expr); }

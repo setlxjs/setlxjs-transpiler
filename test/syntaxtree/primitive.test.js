@@ -18,7 +18,7 @@ describe('Primitive', () => {
     ));
   });
 
-  it('should parse a sring', () => {
+  it('should parse a string', () => {
     parser('"some string";').should.eql(makeStmt(
       Primitive(types.STRING, '"some string"')
     ));
