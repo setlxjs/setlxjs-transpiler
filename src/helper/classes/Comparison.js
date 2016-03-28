@@ -14,5 +14,5 @@ class Comparison {
 }
 
 export default function creator( op, lefthand, righthand ) {
-  return new Comparison( lefthand, righthand );
+  return new Comparison( op, lefthand, righthand );
 }
