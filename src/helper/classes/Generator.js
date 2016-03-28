@@ -1,20 +1,24 @@
 import { GENERATOR } from '../constants/tokens';
 
 class Generator {
-  constructor( iterators, expression ) {
+  constructor( mapper, iterators, expression ) {
     this.token = GENERATOR;
+    this.mapper = mapper;
     this.iterators = iterators;
     this.expression = expression;
   }
 
   toString() {
     if ( this.expression ) {
-      return `Generator( ${ this.iterators.join(', ') }, ${ this.expression } )`;
+      return `Generator(
+  ${ this.mapper },
+  ${ this.iterators.join(', ') },
+  ${ this.expression }\n)`;
     }
-    return `Generator( ${ this.iterators.join(', ') } )`;
+    return `Generator(\n  ${ this.mapper }\n ${ this.iterators.join(', ') }\n)`;
   }
 }
 
-export default function creator( iterators, expression ) {
-  return new Generator( iterators, expression );
+export default function creator( mapper, iterators, expression ) {
+  return new Generator( mapper, iterators, expression );
 }

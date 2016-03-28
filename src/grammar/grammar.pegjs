@@ -264,9 +264,9 @@ CollectionBuilder
     / WS RANGE_SIGN WS expr2:Expression
       { return function(expr1) { return Range(expr1, expr2); }; }
     / WS ':' WS chain:IteratorChain expr2:(WS '|' WS Expression)?
-      { return function(expr1) { return Generator(chain, (expr2 || [])[3]); }; }
+      { return function(expr1) { return Generator(expr1, chain, (expr2 || [])[3]); }; }
     )?
-    { return make ? make() : expr1; }
+    { return make ? make(expr1) : [expr1]; }
 
 IteratorChain
   = it1:Iterator it2:(WS ',' WS Iterator)*
