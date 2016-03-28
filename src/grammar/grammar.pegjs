@@ -89,9 +89,9 @@ AssignmentOther
     ) WS expr:Expression
     {
       if (op === ops.PLUS || op === ops.MINUS) {
-        return Assignment(asable, Sum(asable, op, expr));
+        return Assignment(asable, Sum(op, asable, expr));
       }
-      return Assignment(asable, Product(asable, op, expr));
+      return Assignment(asable, Product(op, asable, expr));
     }
 
 AssignmentDirect
