@@ -61,8 +61,8 @@ Statement
     { return Statement(assign); }
   / WS expr:Expression WS ';'
     { return Statement(expr); }
-  / WS 'for' WS '(' iterators:IteratorChain expr:('|' Expression )? ')' WS '{' blk:Block '}'
-    { return ForLoop(iterators, expr, blk); }
+  / WS 'for' WS '(' iterators:IteratorChain expr:(WS '|' WS Expression)? ')' WS '{' blk:Block '}'
+    { return ForLoop(iterators, expr ? expr[3] : null, blk); }
   / WS 'while' WS '(' expr:Expression ')' WS '{' blk:Block '}'
     { return WhileLoop(expr, blk); }
   / WS 'if' WS '(' WS expr:Expression WS ')' WS '{' blk:Block '}'
