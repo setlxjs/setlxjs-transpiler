@@ -89,7 +89,7 @@ describe('List', () => {
           Identifer('x'),
           [Iterator(Identifer('x'), Identifer('y'))],
           Comparison(
-            ops.EQUALS,
+            ops.EQUAL,
             Product(ops.MODULO, Identifer('x'), int(2)),
             int(0)
           )
