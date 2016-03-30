@@ -238,7 +238,7 @@ CollectionAccessParams
           return exprl;
         }
       }
-    / WS RANGE_SIGN WS expr2:Expression
+    / WS RANGE_SIGN WS expr2:Expression?
       { return function(expr1) { return Range(expr1, expr2); }; }
     )?
     { return more ? more(expr) : expr; }
@@ -247,7 +247,7 @@ CollectionAccessParams
   / expr1:Expression
     { return Range(expr1, expr2); }
   / RANGE_SIGN expr:Expression
-    { return Range(Primitive(types.INTEGER, 0), expr); }
+    { return Range(Primitive(types.INTEGER, 1), expr); }
 
 ExprList
   = expr1:Expression expr2:(WS ',' WS Expression)*
