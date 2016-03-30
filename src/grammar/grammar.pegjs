@@ -210,10 +210,10 @@ Factor
     }
 
 Procedure
-  = 'procedure' WS '(' WS params:ProcedureParameters WS ')' WS '{' blk:Block '}'
-    { return Procedure(params, blk); }
-  / 'closure' WS '(' WS ProcedureParameters WS ')' WS '{' Block '}'
-    { return Procedure(params, blk, true); }
+  = 'procedure' WS '(' WS params:ProcedureParameters? WS ')' WS '{' blk:Block '}'
+    { return Procedure(params || [], blk); }
+  / 'closure' WS '(' WS params:ProcedureParameters? WS ')' WS '{' blk:Block '}'
+    { return Procedure(params || [], blk, true); }
 
 ProcedureParameters
   = v1:Variable v2:(WS ',' WS Variable)*
