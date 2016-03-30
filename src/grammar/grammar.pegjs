@@ -3,6 +3,7 @@
   var Assignment = require('../classes/Assignment');
   var Block = require('../classes/Block');
   var Call = require('../classes/Call');
+  var CaseStmt = require('../classes/CaseStmt');
   var Comparison = require('../classes/Comparison');
   var Conjunction = require('../classes/Conjunction');
   var CollectionAccess = require('../classes/CollectionAccess');
@@ -23,6 +24,7 @@
   var Return = require('../classes/Return');
   var SetlSet = require('../classes/SetlSet');
   var Statement = require('../classes/Statement');
+  var SwitchStmt = require('../classes/SwitchStmt');
   var Sum = require('../classes/Sum');
   var WhileLoop = require('../classes/WhileLoop');
 
@@ -65,6 +67,23 @@ Statement
     { return ForLoop(iterators, expr ? expr[3] : null, blk); }
   / WS 'while' WS '(' expr:Expression ')' WS '{' blk:Block '}'
     { return WhileLoop(expr, blk); }
+  / WS 'switch' WS '{'
+      cases:(
+        WS 'case' WS expr:Expression ':' blk:Block
+        { return CaseStmt(expr, blk); }
+      )*
+      deflt:(
+        WS 'default' WS ':' blk:Block
+        { return CaseStmt(null, blk); }
+      )?
+      '}'
+    {
+      cases = cases || [];
+      if (deflt) {
+        cases.push(deflt);
+      }
+      return SwitchStmt(cases);
+    }
   / WS 'if' WS '(' WS expr:Expression WS ')' WS '{' blk:Block '}'
     elseif:(WS 'else' WS 'if' WS '(' WS expr:Expression ')' WS '{' blk:Block '}'
       { return function(elseblk) { return IfStmt(expr, blk, elseblk)}; }
