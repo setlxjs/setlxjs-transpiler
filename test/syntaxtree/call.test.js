@@ -1,3 +1,4 @@
+
 require('should');
 const Block = require('../../build/classes/Block');
 const Statement = require('../../build/classes/Statement');
@@ -34,7 +35,7 @@ describe('Call', () => {
       Call(Identifer('mycollection'), CollectionAccess(Range(int(2), int(5))))
     ));
 
-    parser('mycollection[1..6];').should.eql(makeStmt(
+    parser('mycollection[..6];').should.eql(makeStmt(
       Call(Identifer('mycollection'), CollectionAccess(Range(int(1), int(6))))
     ));
   });
@@ -46,6 +47,10 @@ describe('Call', () => {
 
     parser('myfunction(1);').should.eql(makeStmt(
       Call(Identifer('myfunction'), FunctionCall([int(1)]))
+    ));
+
+    parser('myfunction(1, 2, 3);').should.eql(makeStmt(
+      Call(Identifer('myfunction'), FunctionCall([int(1), int(2), int(3)]))
     ));
 
     parser('myfunction(2 * 3);').should.eql(makeStmt(
