@@ -1,7 +1,7 @@
 require('should');
 const Block = require('../../build/classes/Block');
 const Statement = require('../../build/classes/Statement');
-const Identifer = require('../../build/classes/Identifer');
+const Identifier = require('../../build/classes/Identifier');
 
 const parser = require('../../build/parse');
 
@@ -9,18 +9,18 @@ function makeStmt(expr) {
   return Block([Statement(expr)]);
 }
 
-describe('Identifer', () => {
+describe('Identifier', () => {
   it('should parse an identifer', () => {
     parser('test;').should.eql(makeStmt(
-      Identifer('test')
+      Identifier('test')
     ));
 
     parser('test_2;').should.eql(makeStmt(
-      Identifer('test_2')
+      Identifier('test_2')
     ));
 
     parser('test_xy;').should.eql(makeStmt(
-      Identifer('test_xy')
+      Identifier('test_xy')
     ));
   });
 

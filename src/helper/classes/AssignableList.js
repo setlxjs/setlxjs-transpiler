@@ -1,4 +1,4 @@
-import { ASSIGNABLE_LIST, IDENTIFER } from '../constants/tokens';
+import { ASSIGNABLE_LIST, IDENTIFIER } from '../constants/tokens';
 import { UnsupportedError } from '../errors/UnsupportedError';
 
 class AssignableList {
@@ -13,7 +13,7 @@ class AssignableList {
 }
 
 export default function creator( assignables ) {
-  if (!assignables.every(assignable => assignable.token === IDENTIFER)) {
+  if (!assignables.every(assignable => assignable.token === IDENTIFIER)) {
     throw new UnsupportedError('Nested list assignments');
   }
   return new AssignableList( assignables );

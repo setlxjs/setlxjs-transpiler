@@ -1,7 +1,7 @@
 require('should');
 const Block = require('../../build/classes/Block');
 const Statement = require('../../build/classes/Statement');
-const Identifer = require('../../build/classes/Identifer');
+const Identifier = require('../../build/classes/Identifier');
 const Primitive = require('../../build/classes/Primitive');
 const Assignment = require('../../build/classes/Assignment');
 const Return = require('../../build/classes/Return');
@@ -38,7 +38,7 @@ describe('Procedure', () => {
   it('should parse procedures in assignments', () => {
     parser('alwaystrue := procedure() { return true; };').should.eql(makeStmt(
       Assignment(
-        Identifer('alwaystrue'),
+        Identifier('alwaystrue'),
         Procedure(
           [],
           Block([Return(Primitive(types.BOOLEAN, true))])

@@ -2,7 +2,7 @@ require('should');
 const Block = require('../../build/classes/Block');
 const Statement = require('../../build/classes/Statement');
 const Primitive = require('../../build/classes/Primitive');
-const Identifer = require('../../build/classes/Identifer');
+const Identifier = require('../../build/classes/Identifier');
 const List = require('../../build/classes/List');
 const Generator = require('../../build/classes/Generator');
 const Iterator = require('../../build/classes/Iterator');
@@ -39,7 +39,7 @@ describe('List', () => {
     ));
 
     parser('[ident, 1, "some string"];').should.eql(makeStmt(
-      List([Identifer('ident'), int(1), string('"some string"')])
+      List([Identifier('ident'), int(1), string('"some string"')])
     ));
   });
 
@@ -53,11 +53,11 @@ describe('List', () => {
     ));
 
     parser('[x..29000];').should.eql(makeStmt(
-      List(Range(Identifer('x'), int(29000)))
+      List(Range(Identifier('x'), int(29000)))
     ));
 
     parser('[x..y];').should.eql(makeStmt(
-      List(Range(Identifer('x'), Identifer('y')))
+      List(Range(Identifier('x'), Identifier('y')))
     ));
   });
 
@@ -65,8 +65,8 @@ describe('List', () => {
     parser('[x: x in y];').should.eql(makeStmt(
       List(
         Generator(
-          Identifer('x'),
-          [Iterator(Identifer('x'), Identifer('y'))]
+          Identifier('x'),
+          [Iterator(Identifier('x'), Identifier('y'))]
         )
       )
     ));
@@ -74,10 +74,10 @@ describe('List', () => {
     parser('[x + y: x in a, y in a];').should.eql(makeStmt(
       List(
         Generator(
-          Sum(ops.PLUS, Identifer('x'), Identifer('y')),
+          Sum(ops.PLUS, Identifier('x'), Identifier('y')),
           [
-            Iterator(Identifer('x'), Identifer('a')),
-            Iterator(Identifer('y'), Identifer('a')),
+            Iterator(Identifier('x'), Identifier('a')),
+            Iterator(Identifier('y'), Identifier('a')),
           ]
         )
       )
@@ -86,11 +86,11 @@ describe('List', () => {
     parser('[x: x in y | x % 2 == 0];').should.eql(makeStmt(
       List(
         Generator(
-          Identifer('x'),
-          [Iterator(Identifer('x'), Identifer('y'))],
+          Identifier('x'),
+          [Iterator(Identifier('x'), Identifier('y'))],
           Comparison(
             ops.EQUAL,
-            Product(ops.MODULO, Identifer('x'), int(2)),
+            Product(ops.MODULO, Identifier('x'), int(2)),
             int(0)
           )
         )

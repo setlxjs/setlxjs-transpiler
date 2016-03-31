@@ -1,7 +1,7 @@
 require('should');
 const Block = require('../../build/classes/Block');
 const Statement = require('../../build/classes/Statement');
-const Identifer = require('../../build/classes/Identifer');
+const Identifier = require('../../build/classes/Identifier');
 const Assignment = require('../../build/classes/Assignment');
 const Primitive = require('../../build/classes/Primitive');
 const Sum = require('../../build/classes/Sum');
@@ -19,22 +19,22 @@ function makeStmt(expr) {
 describe('Assignments', () => {
   it('should parse a normal assignment', () => {
     parser('x := 2;').should.eql(makeStmt(
-      Assignment(Identifer('x'), Primitive(types.INTEGER, 2))
+      Assignment(Identifier('x'), Primitive(types.INTEGER, 2))
     ));
 
     parser('x := "some string";').should.eql(makeStmt(
-      Assignment(Identifer('x'), Primitive(types.STRING, '"some string"'))
+      Assignment(Identifier('x'), Primitive(types.STRING, '"some string"'))
     ));
 
     parser('x := true;').should.eql(makeStmt(
-      Assignment(Identifer('x'), Primitive(types.BOOLEAN, true))
+      Assignment(Identifier('x'), Primitive(types.BOOLEAN, true))
     ));
   });
 
   it('should parse a normal assignment with righthandside expressions', () => {
     parser('x := 2 + 4;').should.eql(makeStmt(
       Assignment(
-        Identifer('x'),
+        Identifier('x'),
         Sum(ops.PLUS, Primitive(types.INTEGER, 2), Primitive(types.INTEGER, 4))
       )
     ));
@@ -43,43 +43,43 @@ describe('Assignments', () => {
   it('should parse expression assignments', () => {
     parser('x += 2;').should.eql(makeStmt(
       Assignment(
-        Identifer('x'),
-        Sum(ops.PLUS, Identifer('x'), Primitive(types.INTEGER, 2))
+        Identifier('x'),
+        Sum(ops.PLUS, Identifier('x'), Primitive(types.INTEGER, 2))
       )
     ));
 
     parser('x -= 2;').should.eql(makeStmt(
       Assignment(
-        Identifer('x'),
-        Sum(ops.MINUS, Identifer('x'), Primitive(types.INTEGER, 2))
+        Identifier('x'),
+        Sum(ops.MINUS, Identifier('x'), Primitive(types.INTEGER, 2))
       )
     ));
 
     parser('x *= 2;').should.eql(makeStmt(
       Assignment(
-        Identifer('x'),
-        Product(ops.TIMES, Identifer('x'), Primitive(types.INTEGER, 2))
+        Identifier('x'),
+        Product(ops.TIMES, Identifier('x'), Primitive(types.INTEGER, 2))
       )
     ));
 
     parser('x /= 2;').should.eql(makeStmt(
       Assignment(
-        Identifer('x'),
-        Product(ops.DIVIDED_BY, Identifer('x'), Primitive(types.INTEGER, 2))
+        Identifier('x'),
+        Product(ops.DIVIDED_BY, Identifier('x'), Primitive(types.INTEGER, 2))
       )
     ));
 
     parser('x %= 2;').should.eql(makeStmt(
       Assignment(
-        Identifer('x'),
-        Product(ops.MODULO, Identifer('x'), Primitive(types.INTEGER, 2))
+        Identifier('x'),
+        Product(ops.MODULO, Identifier('x'), Primitive(types.INTEGER, 2))
       )
     ));
 
     parser('x \\= 2;').should.eql(makeStmt(
       Assignment(
-        Identifer('x'),
-        Product(ops.INTEGER_DIVISION, Identifer('x'), Primitive(types.INTEGER, 2))
+        Identifier('x'),
+        Product(ops.INTEGER_DIVISION, Identifier('x'), Primitive(types.INTEGER, 2))
       )
     ));
   });
@@ -87,10 +87,10 @@ describe('Assignments', () => {
   it('should parse expression assignments with righthandside expressions', () => {
     parser('x += 2 + 6;').should.eql(makeStmt(
       Assignment(
-        Identifer('x'),
+        Identifier('x'),
         Sum(
           ops.PLUS,
-          Identifer('x'),
+          Identifier('x'),
           Sum(ops.PLUS, Primitive(types.INTEGER, 2), Primitive(types.INTEGER, 6))
         )
       )
@@ -98,10 +98,10 @@ describe('Assignments', () => {
 
     parser('x += 2 * 6;').should.eql(makeStmt(
       Assignment(
-        Identifer('x'),
+        Identifier('x'),
         Sum(
           ops.PLUS,
-          Identifer('x'),
+          Identifier('x'),
           Product(ops.TIMES, Primitive(types.INTEGER, 2), Primitive(types.INTEGER, 6))
         )
       )

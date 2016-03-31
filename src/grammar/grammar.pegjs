@@ -12,7 +12,7 @@
   var ForLoop = require('../classes/ForLoop');
   var FunctionCall = require('../classes/FunctionCall');
   var Generator = require('../classes/Generator');
-  var Identifer = require('../classes/Identifer');
+  var Identifier = require('../classes/Identifier');
   var IfStmt = require('../classes/IfStmt');
   var Iterator = require('../classes/Iterator');
   var List = require('../classes/List');
@@ -309,9 +309,9 @@ BOOLEAN "bool"
   = ('true' / 'false')
     { return Primitive(types.BOOLEAN, text() === 'true'); }
 
-ID "identifer"
+ID "identifier"
   = [a-z][a-zA-Z_0-9]*
-    { return Identifer(text()); }
+    { return Identifier(text()); }
 
 NUMBER "number"
   = '0'

@@ -2,7 +2,7 @@
 require('should');
 const Block = require('../../build/classes/Block');
 const Statement = require('../../build/classes/Statement');
-const Identifer = require('../../build/classes/Identifer');
+const Identifier = require('../../build/classes/Identifier');
 const Call = require('../../build/classes/Call');
 const FunctionCall = require('../../build/classes/FunctionCall');
 const CollectionAccess = require('../../build/classes/CollectionAccess');
@@ -28,34 +28,34 @@ function makeStmt(expr) {
 describe('Call', () => {
   it('should parse collection access calls', () => {
     parser('mycollection[1];').should.eql(makeStmt(
-      Call(Identifer('mycollection'), CollectionAccess(int(1)))
+      Call(Identifier('mycollection'), CollectionAccess(int(1)))
     ));
 
     parser('mycollection[2..5];').should.eql(makeStmt(
-      Call(Identifer('mycollection'), CollectionAccess(Range(int(2), int(5))))
+      Call(Identifier('mycollection'), CollectionAccess(Range(int(2), int(5))))
     ));
 
     parser('mycollection[..6];').should.eql(makeStmt(
-      Call(Identifer('mycollection'), CollectionAccess(Range(int(1), int(6))))
+      Call(Identifier('mycollection'), CollectionAccess(Range(int(1), int(6))))
     ));
   });
 
   it('should parse function calls', () => {
     parser('myfunction();').should.eql(makeStmt(
-      Call(Identifer('myfunction'), FunctionCall([]))
+      Call(Identifier('myfunction'), FunctionCall([]))
     ));
 
     parser('myfunction(1);').should.eql(makeStmt(
-      Call(Identifer('myfunction'), FunctionCall([int(1)]))
+      Call(Identifier('myfunction'), FunctionCall([int(1)]))
     ));
 
     parser('myfunction(1, 2, 3);').should.eql(makeStmt(
-      Call(Identifer('myfunction'), FunctionCall([int(1), int(2), int(3)]))
+      Call(Identifier('myfunction'), FunctionCall([int(1), int(2), int(3)]))
     ));
 
     parser('myfunction(2 * 3);').should.eql(makeStmt(
       Call(
-        Identifer('myfunction'),
+        Identifier('myfunction'),
         FunctionCall([Product(ops.TIMES, int(2), int(3))])
       )
     ));
@@ -65,9 +65,9 @@ describe('Call', () => {
     parser('procedure(a, b) { return a * b; }(2, 5);').should.eql(makeStmt(
       Call(
         Procedure(
-          [Identifer('a'), Identifer('b')],
+          [Identifier('a'), Identifier('b')],
           Block([
-            Return(Product(ops.TIMES, Identifer('a'), Identifer('b'))),
+            Return(Product(ops.TIMES, Identifier('a'), Identifier('b'))),
           ])
         ),
         FunctionCall([int(2), int(5)])
