@@ -2,15 +2,19 @@
 
 A SetlX to Javascript Transpiler.
 
-## Contribute
+This is the transpiler for SetlX.js. To use the transpiler see the [command line interface](https://github.com/setlxjs/setlxjs-cli).
+
+_This Software is work in progress_
+
+## Developers guide
 
 ### Setting up the Environment
 
 Clone the Repository
 
 ```
-git clone https://github.com/hendrikniemann/setlx.js.git setlxjs
-cd setlxjs
+git clone https://github.com/setlxjs/setlxjs-transpiler.git
+cd setlxjs-transpiler
 ```
 
 Install dependencies
@@ -33,7 +37,17 @@ Or let Gulp watch for changes
 gulp watch
 ```
 
-Run the tests with Gulp
+### Running the tests
+
+Make sure you compiled the latest version of your source code with `gulp` (see above).
+SetlX.js uses Mocha to run the tests. To use Mocha install it globally or run the local version instead (leave out `node_modules/.bin/` for global):
+
+Test the parser againt various SetlX programs.
 ```
-gulp test:grammar
+node_modules/.bin/mocha test/grammar/parser.test.js
+```
+
+Test the generated syntax tree.
+```
+node_modules/.bin/mocha test/syntaxtree/*.test.js
 ```
