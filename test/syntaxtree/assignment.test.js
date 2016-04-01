@@ -2,6 +2,7 @@ require('should');
 const Block = require('../../build/classes/Block');
 const Statement = require('../../build/classes/Statement');
 const Identifier = require('../../build/classes/Identifier');
+const AssignableList = require('../../build/classes/AssignableList');
 const Assignment = require('../../build/classes/Assignment');
 const Primitive = require('../../build/classes/Primitive');
 const Sum = require('../../build/classes/Sum');
@@ -104,6 +105,15 @@ describe('Assignments', () => {
           Identifier('x'),
           Product(ops.TIMES, Primitive(types.INTEGER, 2), Primitive(types.INTEGER, 6))
         )
+      )
+    ));
+  });
+
+  it('should parse destructuring assignments', () => {
+    parser('[x, y] := pair;').should.eql(makeStmt(
+      Assignment(
+        AssignableList([Identifier('x'), Identifier('y')]),
+        Identifier('pair')
       )
     ));
   });
