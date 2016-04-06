@@ -5,6 +5,7 @@ import assignment from './assignment';
 import assignableList from './assignableList';
 import identifier from './identifier';
 import list from './list';
+import procedure from './procedure';
 import ifStmt from './ifStmt';
 import disjunction from './disjunction';
 import conjunction from './conjunction';
@@ -18,6 +19,7 @@ import {
   BLOCK,
   CONJUNCTION,
   DISJUNCTION,
+  PROCEDURE,
 } from '../constants/tokens';
 
 export default {
@@ -29,4 +31,5 @@ export default {
   [BLOCK]: block,
   [CONJUNCTION]: conjunction,
   [DISJUNCTION]: disjunction,
+  [PROCEDURE]: procedure,
 };
