@@ -4,7 +4,7 @@ const transpile = require('../../build/transpile');
 const Identifier = require('../../build/classes/Identifier');
 const AssignableList = require('../../build/classes/AssignableList');
 
-describe('assignableList', () => {
+describe('transpilers/assignableList', () => {
   it('should transpile lists of a single identifier correctly', () => {
     transpile(AssignableList([Identifier('x')])).should.be.exactly('[x]');
   });
