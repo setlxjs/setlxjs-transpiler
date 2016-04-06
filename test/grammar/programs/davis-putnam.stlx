@@ -56,11 +56,24 @@ selectLiteral := procedure(s, forbidden) {
 };
 // Diese Prozedur berechnet das Komplement des Literals l.
 negateLiteral := procedure(l) {
-    match (l) {
-        case !p : return p;
-        case  p : return !p;
+    if (l[1] == '-') {
+      return l[2];
+    } else {
+      return ["-", l];
     }
 };
 
-m := parse("{ {r,p,s}, {r,s}, {q,p,s}, {!p,!q}, {!p,s,!r}, {p,!q,r}, {!r,!s,q}, {p,q,r,s}, {r,!s,q}, {!r,s,!q}, {s,!r} }");
+m := parse({
+  {"r","p","s"},
+  {"r","s"},
+  {"q","p","s"},
+  {["-", "p"],["-", "q"]},
+  {["-", "p"],"s",["-", "r"]},
+  {"p",["-", "q"],"r"},
+  {["-", "r"],["-", "s"],"q"},
+  {"p","q","r","s"},
+  {"r",["-", "s"],"q"},
+  {["-", "r"],"s",["-", "q"]},
+  {"s",["-", "r"]}
+});
 print(davisPutnam(m,{}));
