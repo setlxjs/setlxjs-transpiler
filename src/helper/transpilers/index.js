@@ -17,6 +17,7 @@ import {
   STATEMENT,
   BLOCK,
   CONJUNCTION,
+  DISJUNCTION,
 } from '../constants/tokens';
 
 export default {
@@ -27,4 +28,5 @@ export default {
   [STATEMENT]: statement,
   [BLOCK]: block,
   [CONJUNCTION]: conjunction,
+  [DISJUNCTION]: disjunction,
 };
