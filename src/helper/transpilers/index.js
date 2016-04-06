@@ -16,6 +16,7 @@ import {
   ASSIGNABLE_LIST,
   STATEMENT,
   BLOCK,
+  CONJUNCTION,
 } from '../constants/tokens';
 
 export default {
@@ -25,4 +26,5 @@ export default {
   [ASSIGNABLE_LIST]: assignableList,
   [STATEMENT]: statement,
   [BLOCK]: block,
+  [CONJUNCTION]: conjunction,
 };
