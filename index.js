@@ -22,7 +22,7 @@ module.exports = function transpiler(input, options, cb) {
   } else {
     try {
       out = transpiler(input);
-      promise = new Promise.resolve(out);
+      promise = Promise.resolve(out);
     } catch (error) {
       promise = Promise.reject(error);
     }
