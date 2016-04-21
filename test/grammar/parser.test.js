@@ -6,7 +6,7 @@ const parser = require('../../build/parse');
 
 const BASE = './test/grammar';
 
-describe.only('The parser', () => {
+describe('The parser', () => {
   const programs = fs.readdirSync(path.join(BASE, 'programs'));
 
   programs.forEach(file => {
