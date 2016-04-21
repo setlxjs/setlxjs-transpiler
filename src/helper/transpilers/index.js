@@ -8,6 +8,7 @@ import list from './list';
 import procedure from './procedure';
 import disjunction from './disjunction';
 import conjunction from './conjunction';
+import generator from './generator';
 
 import {
   PRIMITIVE,
@@ -20,6 +21,7 @@ import {
   DISJUNCTION,
   PROCEDURE,
   LIST,
+  GENERATOR,
 } from '../constants/tokens';
 
 export default {
@@ -33,4 +35,5 @@ export default {
   [DISJUNCTION]: disjunction,
   [PROCEDURE]: procedure,
   [LIST]: list,
+  [GENERATOR]: generator,
 };

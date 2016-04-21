@@ -8,6 +8,7 @@ export const CONJUNCTION = 'CONJUNCTION';
 export const DISJUNCTION = 'DISJUNCTION';
 export const FOR_LOOP = 'FOR_LOOP';
 export const FUNCTION_CALL = 'FUNCTION_CALL';
+export const GENERATOR = 'GENERATOR';
 export const IDENTIFIER = 'IDENTIFIER';
 export const IF_STMT = 'IF_STMT';
 export const ITERATOR = 'ITERATOR';
