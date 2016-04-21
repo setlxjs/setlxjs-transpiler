@@ -1,10 +1,11 @@
-import transpile from '../util/transpile';
-import createTranspiler from '../util/createTranspiler';
+import { RANGE } from '../constants/tokens';
 
-import { LIST } from '../constants/tokens';
-
-const list = createTranspiler( LIST, tree => {
-  return '[' + tree.elements.map(transpile).join(', ') + ']';
-});
-
-export default list;
+export default function list(tree, transpile, { helperPlugin }) {
+  if (tree.builder.token === RANGE) {
+    const fnName = helperPlugin.request('range');
+    const fromExpr = transpile(tree.builder.fromExpr);
+    const toExpr = transpile(tree.builder.toExpr);
+    return `${fnName}(${fromExpr}, ${toExpr})`;
+  }
+  return `[${tree.builder.map(transpile).join(', ')}]`;
+}

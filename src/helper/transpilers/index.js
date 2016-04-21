@@ -6,7 +6,6 @@ import assignableList from './assignableList';
 import identifier from './identifier';
 import list from './list';
 import procedure from './procedure';
-import ifStmt from './ifStmt';
 import disjunction from './disjunction';
 import conjunction from './conjunction';
 
@@ -20,6 +19,7 @@ import {
   CONJUNCTION,
   DISJUNCTION,
   PROCEDURE,
+  LIST,
 } from '../constants/tokens';
 
 export default {
@@ -32,4 +32,5 @@ export default {
   [CONJUNCTION]: conjunction,
   [DISJUNCTION]: disjunction,
   [PROCEDURE]: procedure,
+  [LIST]: list,
 };
