@@ -9,7 +9,7 @@ function makeStmt(expr) {
   return Block([Statement(expr)]);
 }
 
-describe('Identifier', () => {
+describe('syntaxtree/Identifier', () => {
   it('should parse an identifer', () => {
     parser('test;').should.eql(makeStmt(
       Identifier('test')

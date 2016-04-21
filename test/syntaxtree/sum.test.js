@@ -17,7 +17,7 @@ function int(number) {
   return Primitive(types.INTEGER, number);
 }
 
-describe('Sum', () => {
+describe('syntaxtree/Sum', () => {
   it('should parse a sum with PLUS', () => {
     parser('1 + 2;').should.eql(makeStmt(
       Sum(ops.PLUS, int(1), int(2))

@@ -17,7 +17,7 @@ function makeStmt(expr) {
   return Block([Statement(expr)]);
 }
 
-describe('ForLoop', () => {
+describe('syntaxtree/ForLoop', () => {
   it('should parse for statements with single iterator', () => {
     parser('for(i in x) { true; }').should.eql(Block([
       ForLoop(

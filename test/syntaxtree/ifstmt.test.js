@@ -16,7 +16,7 @@ function makeStmt(expr) {
   return Block([Statement(expr)]);
 }
 
-describe('IfStmt', () => {
+describe('syntaxtree/IfStmt', () => {
   it('should parse if statements without else', () => {
     parser('if(true) { x := 1; }').should.eql(Block([
       IfStmt(

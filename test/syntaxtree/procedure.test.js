@@ -15,7 +15,7 @@ function makeStmt(expr) {
   return Block([Statement(expr)]);
 }
 
-describe('Procedure', () => {
+describe('syntaxtree/Procedure', () => {
   it('should parse procedures as expressions', () => {
     parser('procedure() { return true; };').should.eql(makeStmt(
       Procedure(

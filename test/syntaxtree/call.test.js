@@ -25,7 +25,7 @@ function makeStmt(expr) {
   return Block([Statement(expr)]);
 }
 
-describe('Call', () => {
+describe('syntaxtree/Call', () => {
   it('should parse collection access calls', () => {
     parser('mycollection[1];').should.eql(makeStmt(
       Call(Identifier('mycollection'), CollectionAccess(int(1)))

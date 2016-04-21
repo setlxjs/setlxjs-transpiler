@@ -17,7 +17,7 @@ function makeStmt(expr) {
   return Block([Statement(expr)]);
 }
 
-describe('Assignments', () => {
+describe('syntaxtree/Assignments', () => {
   it('should parse a normal assignment', () => {
     parser('x := 2;').should.eql(makeStmt(
       Assignment(Identifier('x'), Primitive(types.INTEGER, 2))

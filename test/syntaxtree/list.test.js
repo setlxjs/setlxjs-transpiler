@@ -28,7 +28,7 @@ function string(value) {
   return Primitive(types.STRING, value);
 }
 
-describe('List', () => {
+describe('syntaxtree/List', () => {
   it('should parse lists from value lists', () => {
     parser('[1, 2, 3];').should.eql(makeStmt(
       List([int(1), int(2), int(3)])

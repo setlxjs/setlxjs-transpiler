@@ -11,7 +11,7 @@ function makeStmt(expr) {
   return Block([Statement(expr)]);
 }
 
-describe('Primitive', () => {
+describe('syntaxtree/Primitive', () => {
   it('should parse an integer', () => {
     parser('1283;').should.eql(makeStmt(
       Primitive(types.INTEGER, 1283)
