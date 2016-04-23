@@ -15,8 +15,8 @@ function int(number) {
   return Primitive(types.INTEGER, number);
 }
 
-function bool(number) {
-  return Primitive(types.BOOLEAN, number);
+function bool(val) {
+  return Primitive(types.BOOLEAN, val);
 }
 
 const list = List([int(1), int(2), int(3)]);
