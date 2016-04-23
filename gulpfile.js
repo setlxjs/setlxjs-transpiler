@@ -4,7 +4,7 @@ const mocha = require('gulp-mocha');
 const babel = require('gulp-babel');
 
 const GRAMMAR_PATH = 'src/grammar/*.pegjs';
-const HELPER_PATH = 'src/helper/**/*.js';
+const HELPER_PATH = 'src/**/*.js';
 
 gulp.task('make:grammar', () => {
   gulp.src(GRAMMAR_PATH)
