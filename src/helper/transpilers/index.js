@@ -9,6 +9,7 @@ import procedure from './procedure';
 import disjunction from './disjunction';
 import conjunction from './conjunction';
 import generator from './generator';
+import set from './set';
 
 import {
   PRIMITIVE,
@@ -22,6 +23,7 @@ import {
   PROCEDURE,
   LIST,
   GENERATOR,
+  SET,
 } from '../constants/tokens';
 
 export default {
@@ -36,4 +38,5 @@ export default {
   [PROCEDURE]: procedure,
   [LIST]: list,
   [GENERATOR]: generator,
+  [SET]: set,
 };
