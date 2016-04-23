@@ -1,3 +1,10 @@
+const mapper = ind => line => {
+  if (line === '') {
+    return '';
+  }
+  return ind + line;
+};
+
 export default function indent(amount, string) {
   if (!amount) {
     return string;
@@ -8,5 +15,5 @@ export default function indent(amount, string) {
     ind += ' ';
   }
 
-  return ind + string.split('\n').join('\n' + ind);
+  return string.split('\n').map(mapper(ind)).join('\n');
 }
