@@ -10,6 +10,7 @@ import disjunction from './disjunction';
 import conjunction from './conjunction';
 import generator from './generator';
 import set from './set';
+import ifStmt from './ifStmt';
 
 import {
   PRIMITIVE,
@@ -24,6 +25,7 @@ import {
   LIST,
   GENERATOR,
   SET,
+  IF_STMT,
 } from '../constants/tokens';
 
 export default {
@@ -39,4 +41,5 @@ export default {
   [LIST]: list,
   [GENERATOR]: generator,
   [SET]: set,
+  [IF_STMT]: ifStmt,
 };

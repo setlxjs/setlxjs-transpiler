@@ -1,21 +1,14 @@
-import transpile from '../util/transpile';
-import createTranspiler from '../util/createTranspiler';
+import indent from '../util/indent';
+import { IF_STMT } from '../constants/tokens';
 
-import { IF_STMT, BLOCK } from '../constants/tokens';
-
-const ifStmt = createTranspiler( IF_STMT, tree => {
-  let ret = `if ( ${ transpile( tree.condition ) } ) {\n` +
-            transpile( tree.block ) + '}';
-
-  if ( tree.elseBlock !== null ) {
-    if ( tree.elseBlock.token === BLOCK ) {
-      ret += ` else {\n${ transpile( tree.elseBlock ) }}`;
+export default function ifStmt({ condition, block, elseBlock }, transpile) {
+  let ret = `if (${transpile(condition)}) {\n${indent(2, transpile(block))}}`;
+  if (elseBlock) {
+    if (elseBlock.token === IF_STMT) {
+      ret += ` else ${transpile(elseBlock)}`;
     } else {
-      ret += ' else ' + transpile( tree.elseBlock );
+      ret += ` else {\n${indent(2, transpile(elseBlock))}}`;
     }
   }
-
   return ret;
-});
-
-export default ifStmt;
+}
