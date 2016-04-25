@@ -12,6 +12,7 @@ import generator from './generator';
 import set from './set';
 import ifStmt from './ifStmt';
 import sum from './sum';
+import product from './product';
 
 import {
   PRIMITIVE,
@@ -28,6 +29,7 @@ import {
   SET,
   IF_STMT,
   SUM,
+  PRODUCT,
 } from '../constants/tokens';
 
 export default {
@@ -45,4 +47,5 @@ export default {
   [SET]: set,
   [IF_STMT]: ifStmt,
   [SUM]: sum,
+  [PRODUCT]: product,
 };
