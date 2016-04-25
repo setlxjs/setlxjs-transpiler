@@ -11,6 +11,7 @@ import conjunction from './conjunction';
 import generator from './generator';
 import set from './set';
 import ifStmt from './ifStmt';
+import sum from './sum';
 
 import {
   PRIMITIVE,
@@ -26,6 +27,7 @@ import {
   GENERATOR,
   SET,
   IF_STMT,
+  SUM,
 } from '../constants/tokens';
 
 export default {
@@ -42,4 +44,5 @@ export default {
   [GENERATOR]: generator,
   [SET]: set,
   [IF_STMT]: ifStmt,
+  [SUM]: sum,
 };

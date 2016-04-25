@@ -1,17 +1,11 @@
-import transpile from '../util/transpile';
-import createTranspiler from '../util/createTranspiler';
+import { PLUS } from '../constants/operators';
 
-import { SUM } from '../constants/tokens';
-import { PLUS, MINUS } from '../constants/operators';
-
-const ifStmt = createTranspiler( SUM, tree => {
-  if (tree.operator === PLUS) {
-    return `__add( ${transpile(tree.lefthand)}, ${ transpile(tree.righthand) } )`;
+export default function sum({ operator, lefthand, righthand }, transpile, { helperPlugin }) {
+  let fnName;
+  if (operator === PLUS) {
+    fnName = helperPlugin.request('add');
+  } else {
+    fnName = helperPlugin.request('sub');
   }
-
-  if (tree.operator === MINUS) {
-    return `__sub( ${transpile(tree.lefthand)}, ${ transpile(tree.righthand) } )`;
-  }
-});
-
-export default ifStmt;
+  return `${fnName}(${transpile(lefthand)}, ${transpile(righthand)})`;
+}
