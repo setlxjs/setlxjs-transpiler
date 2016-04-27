@@ -1,3 +1,3 @@
 export default function assignableList(tree, transpile) {
-  return '[' + tree.assignables.map(transpile).join(', ') + ']';
+  return `[${tree.assignables.map(transpile).join(', ')}]`;
 }

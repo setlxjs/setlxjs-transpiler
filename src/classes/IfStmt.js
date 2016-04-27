@@ -9,10 +9,10 @@ class IfStmt {
   }
 
   toString() {
-    if ( this.elseBlk === null ) {
-      return `IfStmt( ${ this.condition }, ${ this.block } )`;
+    if (this.elseBlk === null) {
+      return `IfStmt( ${this.condition}, ${this.block} )`;
     }
-    return `IfStmt( ${ this.condition }, ${ this.block }, , ${this.elseBlk} )`;
+    return `IfStmt( ${this.condition}, ${this.block}, , ${this.elseBlk} )`;
   }
 }
 

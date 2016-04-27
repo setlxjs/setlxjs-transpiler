@@ -1,12 +1,12 @@
-import { parse } from './grammar/grammar';
+import { parse } from './grammar/grammar'; // eslint-disable-line import/no-unresolved
 
-export default function parser( fileContent ) {
+export default function parser(fileContent) {
   try {
-    return parse( fileContent );
+    return parse(fileContent);
   } catch (error) {
     if (error.name === 'SyntaxError') {
       error.message = error.message.replace(/\.$/, '') +
-        ` in line ${ error.line }:${ error.column }.`;
+        ` in line ${error.line}:${error.column}.`;
       throw error;
     }
     throw error;

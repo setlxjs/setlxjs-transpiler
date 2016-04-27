@@ -8,7 +8,7 @@ class PrefixOperation {
   }
 
   toString() {
-    return `PrefixOperation( ${ this.operant }, ${ this.operator } )`;
+    return `PrefixOperation( ${this.operant}, ${this.operator} )`;
   }
 }
 

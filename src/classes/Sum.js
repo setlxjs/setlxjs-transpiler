@@ -1,7 +1,7 @@
 import { SUM } from '../constants/tokens';
 
 class Sum {
-  constructor( op, lefthand, righthand ) {
+  constructor(op, lefthand, righthand) {
     this.token = SUM;
     this.operator = op;
     this.lefthand = lefthand;
@@ -9,10 +9,10 @@ class Sum {
   }
 
   toString() {
-    return `Sum( ${ this.operator }, ${ this.lefthand }, ${ this.righthand } )`;
+    return `Sum( ${this.operator}, ${this.lefthand}, ${this.righthand} )`;
   }
 }
 
-export default function creator( op, lefthand, righthand ) {
-  return new Sum( op, lefthand, righthand );
+export default function creator(op, lefthand, righthand) {
+  return new Sum(op, lefthand, righthand);
 }

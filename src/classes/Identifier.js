@@ -1,7 +1,7 @@
 import { IDENTIFIER } from '../constants/tokens';
 
 class Identifier {
-  constructor( name ) {
+  constructor(name) {
     this.token = IDENTIFIER;
     this.name = name;
   }
@@ -11,6 +11,6 @@ class Identifier {
   }
 }
 
-export default function creator( name ) {
-  return new Identifier( name );
+export default function creator(name) {
+  return new Identifier(name);
 }

@@ -1,16 +1,16 @@
 import { COLLECTION_ACCESS } from '../constants/tokens';
 
 class CollectionAccess {
-  constructor( accessor ) {
+  constructor(accessor) {
     this.token = COLLECTION_ACCESS;
     this.accessor = accessor;
   }
 
   toString() {
-    return `CollectionAccess( ${ this.accessor } )`;
+    return `CollectionAccess( ${this.accessor} )`;
   }
 }
 
-export default function creator( accessor ) {
-  return new CollectionAccess( accessor );
+export default function creator(accessor) {
+  return new CollectionAccess(accessor);
 }

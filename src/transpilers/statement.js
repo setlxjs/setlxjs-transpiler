@@ -1,1 +1,1 @@
-export default (tree, transpile) => transpile( tree.child ) + ';';
+export default (tree, transpile) => transpile(tree.child) + ';';

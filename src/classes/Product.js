@@ -1,7 +1,7 @@
 import { PRODUCT } from '../constants/tokens';
 
 class Product {
-  constructor( op, lefthand, righthand ) {
+  constructor(op, lefthand, righthand) {
     this.token = PRODUCT;
     this.operator = op;
     this.lefthand = lefthand;
@@ -9,10 +9,10 @@ class Product {
   }
 
   toString() {
-    return `Product( ${ this.operator }, ${ this.lefthand }, ${ this.righthand } )`;
+    return `Product( ${this.operator}, ${this.lefthand}, ${this.righthand} )`;
   }
 }
 
-export default function creator( op, lefthand, righthand ) {
-  return new Product( op, lefthand, righthand );
+export default function creator(op, lefthand, righthand) {
+  return new Product(op, lefthand, righthand);
 }

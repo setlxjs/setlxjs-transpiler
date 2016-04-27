@@ -8,7 +8,7 @@ class Primitive {
   }
 
   toString() {
-    return `Primitive(${ this.type })`;
+    return `Primitive(${this.type})`;
   }
 }
 
