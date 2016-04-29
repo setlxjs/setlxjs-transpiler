@@ -14,6 +14,7 @@ import ifStmt from './ifStmt';
 import sum from './sum';
 import product from './product';
 import collectionAccess from './collectionAccess';
+import functionCall from './functionCall';
 
 import {
   PRIMITIVE,
@@ -32,6 +33,7 @@ import {
   SUM,
   PRODUCT,
   COLLECTION_ACCESS,
+  FUNCTION_CALL,
 } from '../constants/tokens';
 
 export default {
@@ -51,4 +53,5 @@ export default {
   [SUM]: sum,
   [PRODUCT]: product,
   [COLLECTION_ACCESS]: collectionAccess,
+  [FUNCTION_CALL]: functionCall,
 };
