@@ -16,6 +16,7 @@ import product from './product';
 import collectionAccess from './collectionAccess';
 import functionCall from './functionCall';
 import call from './call';
+import returnStmt from './returnStmt';
 
 import {
   PRIMITIVE,
@@ -36,6 +37,7 @@ import {
   COLLECTION_ACCESS,
   FUNCTION_CALL,
   CALL,
+  RETURN,
 } from '../constants/tokens';
 
 export default {
@@ -57,4 +59,5 @@ export default {
   [COLLECTION_ACCESS]: collectionAccess,
   [FUNCTION_CALL]: functionCall,
   [CALL]: call,
+  [RETURN]: returnStmt,
 };
