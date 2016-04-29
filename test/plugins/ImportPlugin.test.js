@@ -10,7 +10,7 @@ describe('plugins/ImportPlugin', () => {
   it('should initiate with empty imports', () => {
     const plugin = new ImportPlugin();
 
-    plugin._imps.should.eql([]);
+    plugin.imps.should.eql([]);
   });
 
   it('should be able to add imports', () => {
@@ -18,8 +18,8 @@ describe('plugins/ImportPlugin', () => {
 
     plugin.addImport('varn', 'impname');
 
-    plugin._imps.should.have.length(1);
-    plugin._imps[0].should.eql(makeImp('varn', 'impname'));
+    plugin.imps.should.have.length(1);
+    plugin.imps[0].should.eql(makeImp('varn', 'impname'));
   });
 
   it('should declare the imports', () => {
