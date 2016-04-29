@@ -11,6 +11,7 @@ export const FUNCTION_CALL = 'FUNCTION_CALL';
 export const GENERATOR = 'GENERATOR';
 export const IDENTIFIER = 'IDENTIFIER';
 export const IF_STMT = 'IF_STMT';
+export const INIT_BLOCK = 'INIT_BLOCK';
 export const ITERATOR = 'ITERATOR';
 export const LIST = 'LIST';
 export const PRIMITIVE = 'PRIMITIVE';
