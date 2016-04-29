@@ -13,6 +13,7 @@ import set from './set';
 import ifStmt from './ifStmt';
 import sum from './sum';
 import product from './product';
+import collectionAccess from './collectionAccess';
 
 import {
   PRIMITIVE,
@@ -30,6 +31,7 @@ import {
   IF_STMT,
   SUM,
   PRODUCT,
+  COLLECTION_ACCESS,
 } from '../constants/tokens';
 
 export default {
@@ -48,4 +50,5 @@ export default {
   [IF_STMT]: ifStmt,
   [SUM]: sum,
   [PRODUCT]: product,
+  [COLLECTION_ACCESS]: collectionAccess,
 };
