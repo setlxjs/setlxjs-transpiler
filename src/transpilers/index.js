@@ -15,6 +15,7 @@ import sum from './sum';
 import product from './product';
 import collectionAccess from './collectionAccess';
 import functionCall from './functionCall';
+import call from './call';
 
 import {
   PRIMITIVE,
@@ -34,6 +35,7 @@ import {
   PRODUCT,
   COLLECTION_ACCESS,
   FUNCTION_CALL,
+  CALL,
 } from '../constants/tokens';
 
 export default {
@@ -54,4 +56,5 @@ export default {
   [PRODUCT]: product,
   [COLLECTION_ACCESS]: collectionAccess,
   [FUNCTION_CALL]: functionCall,
+  [CALL]: call,
 };
