@@ -1,8 +1,14 @@
+/* eslint no-var: 0, func-names: 0, no-console: 0, prefer-arrow-callback: 0 */
+var fs = require('fs');
 var parser = require('./build/parse');
 var transpiler = require('./build/index');
+var content;
 
-module.exports = function transpiler(input, options, cb) {
-  var callback, opts, promise, out;
+function exp(input, options, cb) {
+  var callback;
+  var opts;
+  var promise;
+  var out;
   if (typeof options === 'function') {
     callback = options;
   } else if (typeof options === 'undefined') {
@@ -30,9 +36,18 @@ module.exports = function transpiler(input, options, cb) {
 
   if (typeof callback === 'function') {
     promise
-      .then(function(output) { callback(null, output); })
+      .then(function (output) { callback(null, output); })
       .catch(callback);
     return null;
   }
   return promise;
-};
+}
+
+module.exports = exp;
+
+if (process.argv[2]) {
+  content = fs.readFileSync(process.argv[2]).toString();
+  exp(content)
+    .then(console.log.bind(console))
+    .catch(console.error.bind(console));
+}

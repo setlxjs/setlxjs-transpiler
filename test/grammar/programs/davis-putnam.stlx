@@ -63,7 +63,7 @@ negateLiteral := procedure(l) {
     }
 };
 
-m := parse({
+m := {
   {"r","p","s"},
   {"r","s"},
   {"q","p","s"},
@@ -75,5 +75,5 @@ m := parse({
   {"r",["-", "s"],"q"},
   {["-", "r"],"s",["-", "q"]},
   {"s",["-", "r"]}
-});
+};
 print(davisPutnam(m,{}));
