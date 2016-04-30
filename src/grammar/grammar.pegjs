@@ -14,6 +14,7 @@
   var Generator = require('../classes/Generator');
   var Identifier = require('../classes/Identifier');
   var IfStmt = require('../classes/IfStmt');
+  var InitBlock = require('../classes/InitBlock');
   var Iterator = require('../classes/Iterator');
   var List = require('../classes/List');
   var PrefixOperation = require('../classes/PrefixOperation');
@@ -50,7 +51,7 @@
 
 InitBlock
   = stmts:Statement+ WS
-    { return Block(stmts); }
+    { return InitBlock(stmts); }
 
 Block
   = stmts:Statement* WS
