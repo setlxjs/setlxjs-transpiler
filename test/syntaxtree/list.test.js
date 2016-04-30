@@ -1,5 +1,5 @@
 require('should');
-const Block = require('../../build/classes/Block');
+const InitBlock = require('../../build/classes/InitBlock');
 const Statement = require('../../build/classes/Statement');
 const Primitive = require('../../build/classes/Primitive');
 const Identifier = require('../../build/classes/Identifier');
@@ -17,7 +17,7 @@ const ops = require('../../build/constants/operators');
 const parser = require('../../build/parse');
 
 function makeStmt(expr) {
-  return Block([Statement(expr)]);
+  return InitBlock([Statement(expr)]);
 }
 
 function int(number) {

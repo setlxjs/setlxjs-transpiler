@@ -1,4 +1,5 @@
 require('should');
+const InitBlock = require('../../build/classes/InitBlock');
 const Block = require('../../build/classes/Block');
 const Statement = require('../../build/classes/Statement');
 const Identifier = require('../../build/classes/Identifier');
@@ -12,7 +13,7 @@ const types = require('../../build/constants/types');
 const parser = require('../../build/parse');
 
 function makeStmt(expr) {
-  return Block([Statement(expr)]);
+  return InitBlock([Statement(expr)]);
 }
 
 describe('syntaxtree/Procedure', () => {

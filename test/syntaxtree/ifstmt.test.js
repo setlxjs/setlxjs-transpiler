@@ -1,4 +1,5 @@
 require('should');
+const InitBlock = require('../../build/classes/InitBlock');
 const Block = require('../../build/classes/Block');
 const Statement = require('../../build/classes/Statement');
 const Identifier = require('../../build/classes/Identifier');
@@ -18,7 +19,7 @@ function makeStmt(expr) {
 
 describe('syntaxtree/IfStmt', () => {
   it('should parse if statements without else', () => {
-    parser('if(true) { x := 1; }').should.eql(Block([
+    parser('if(true) { x := 1; }').should.eql(InitBlock([
       IfStmt(
         Primitive(types.BOOLEAN, true),
         makeStmt(Assignment(Identifier('x'), Primitive(types.INTEGER, 1)))
@@ -27,7 +28,7 @@ describe('syntaxtree/IfStmt', () => {
   });
 
   it('should parse if statements with else', () => {
-    parser('if(x == 1) { x := 4; } else { x := 5; }').should.eql(Block([
+    parser('if(x == 1) { x := 4; } else { x := 5; }').should.eql(InitBlock([
       IfStmt(
         Comparison(ops.EQUAL, Identifier('x'), Primitive(types.INTEGER, 1)),
         makeStmt(Assignment(Identifier('x'), Primitive(types.INTEGER, 4))),
@@ -45,7 +46,7 @@ describe('syntaxtree/IfStmt', () => {
       } else {
         x := 5;
       }
-    `).should.eql(Block([
+    `).should.eql(InitBlock([
       IfStmt(
         Comparison(ops.EQUAL, Identifier('x'), Primitive(types.INTEGER, 2)),
         makeStmt(Assignment(Identifier('x'), Primitive(types.INTEGER, 6))),

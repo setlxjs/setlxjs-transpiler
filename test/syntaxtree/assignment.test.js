@@ -1,5 +1,5 @@
 require('should');
-const Block = require('../../build/classes/Block');
+const InitBlock = require('../../build/classes/InitBlock');
 const Statement = require('../../build/classes/Statement');
 const Identifier = require('../../build/classes/Identifier');
 const AssignableList = require('../../build/classes/AssignableList');
@@ -14,7 +14,7 @@ const ops = require('../../build/constants/operators');
 const parser = require('../../build/parse');
 
 function makeStmt(expr) {
-  return Block([Statement(expr)]);
+  return InitBlock([Statement(expr)]);
 }
 
 describe('syntaxtree/Assignments', () => {
