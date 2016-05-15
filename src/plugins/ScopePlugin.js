@@ -19,7 +19,6 @@ const varchars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 class ScopePlugin {
   constructor() {
     this.scopes = [new Scope()];
-    this.tempCounter = 0;
   }
 
   get currentScope() {
@@ -34,7 +33,6 @@ class ScopePlugin {
   }
 
   closeScope() {
-    this.tempCounter = 0;
     const vars = this.scopes.shift().vars.join(', ');
 
     return vars === '' ? '' : `var ${vars};`;
