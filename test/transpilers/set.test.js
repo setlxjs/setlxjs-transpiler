@@ -10,7 +10,7 @@ const Iterator = require('../../build/classes/Iterator');
 
 const types = require('../../build/constants/types');
 
-const transpile = require('../../build/transpile');
+const transpile = require('../../build/transpile')();
 
 function int(number) {
   return Primitive(types.INTEGER, number);

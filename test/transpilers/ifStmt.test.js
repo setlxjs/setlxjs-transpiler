@@ -6,7 +6,7 @@ const Block = require('../../build/classes/Block');
 const Statement = require('../../build/classes/Statement');
 const types = require('../../build/constants/types');
 
-const transpile = require('../../build/transpile');
+const transpile = require('../../build/transpile')();
 
 function bool(val) {
   return Primitive(types.BOOLEAN, val);

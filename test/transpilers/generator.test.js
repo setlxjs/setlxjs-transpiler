@@ -1,6 +1,6 @@
 require('should');
 
-const transpile = require('../../build/transpile');
+const transpile = require('../../build/transpile')();
 
 const Generator = require('../../build/classes/Generator');
 const Primitive = require('../../build/classes/Primitive');
