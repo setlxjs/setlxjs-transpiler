@@ -1,6 +1,6 @@
 require('should');
 
-const transpile = require('../../build/transpile')();
+const transpile = require('../../build/createTranspiler')();
 const Identifier = require('../../build/classes/Identifier');
 const Product = require('../../build/classes/Product');
 
