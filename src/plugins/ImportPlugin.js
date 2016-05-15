@@ -6,6 +6,12 @@ export default class ImportPlugin {
   }
 
   addImport(varName, importName) {
+    // only import once
+    for (let i = 0, len = this.imps.length; i < len; ++i) {
+      if (varName === this.imps[i].varName) {
+        return;
+      }
+    }
     this.imps.push({ varName, importName });
   }
 
