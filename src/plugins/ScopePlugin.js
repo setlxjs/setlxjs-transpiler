@@ -37,7 +37,7 @@ class ScopePlugin {
     this.tempCounter = 0;
     const vars = this.scopes.shift().vars.join(', ');
 
-    return `var ${vars};`;
+    return vars === '' ? '' : `var ${vars};`;
   }
 
   register(name) {

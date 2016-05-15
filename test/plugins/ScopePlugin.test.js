@@ -44,6 +44,12 @@ describe('plugins/ScopePlugin', () => {
     (() => instance.currentScope).should.throw();
   });
 
+  it('should define nothing if there are no variables in the scope', () => {
+    const instance = new ScopePlugin();
+
+    instance.closeScope().should.be.exactly('');
+  });
+
   it('should open new scopes on top', () => {
     const instance = new ScopePlugin();
 
