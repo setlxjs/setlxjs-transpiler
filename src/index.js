@@ -1,7 +1,7 @@
 import parse from './parse';
-import transpile from './transpile';
+import createTranspiler from './createTranspiler';
 
 export default function transpiler(fileContent) {
   const syntaxTree = parse(fileContent);
-  return transpile(syntaxTree);
+  return createTranspiler()(syntaxTree);
 }
