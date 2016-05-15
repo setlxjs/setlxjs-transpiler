@@ -10,6 +10,10 @@ export default class ImportPlugin {
   }
 
   imports() {
+    if (this.imps.length === 0) {
+      return '';
+    }
+
     const importName = `$$import$${this.name}`;
     const imps = this.imps.map(
       imp => `var ${imp.varName} = ${importName}.${imp.importName};`

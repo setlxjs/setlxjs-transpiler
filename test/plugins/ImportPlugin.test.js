@@ -13,6 +13,12 @@ describe('plugins/ImportPlugin', () => {
     plugin.imps.should.eql([]);
   });
 
+  it('should not print anything if no imports were made', () => {
+    const plugin = new ImportPlugin();
+
+    plugin.imports().should.be.exactly('');
+  });
+
   it('should be able to add imports', () => {
     const plugin = new ImportPlugin();
 
