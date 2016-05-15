@@ -17,6 +17,7 @@ import collectionAccess from './collectionAccess';
 import functionCall from './functionCall';
 import call from './call';
 import returnStmt from './returnStmt';
+import initBlock from './initBlock';
 
 import {
   PRIMITIVE,
@@ -38,6 +39,7 @@ import {
   FUNCTION_CALL,
   CALL,
   RETURN,
+  INIT_BLOCK,
 } from '../constants/tokens';
 
 export default {
@@ -60,4 +62,5 @@ export default {
   [FUNCTION_CALL]: functionCall,
   [CALL]: call,
   [RETURN]: returnStmt,
+  [INIT_BLOCK]: initBlock,
 };
