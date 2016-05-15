@@ -18,6 +18,7 @@ import functionCall from './functionCall';
 import call from './call';
 import returnStmt from './returnStmt';
 import initBlock from './initBlock';
+import whileLoop from './whileLoop';
 
 import {
   PRIMITIVE,
@@ -40,6 +41,7 @@ import {
   CALL,
   RETURN,
   INIT_BLOCK,
+  WHILE_LOOP,
 } from '../constants/tokens';
 
 export default {
@@ -63,4 +65,5 @@ export default {
   [CALL]: call,
   [RETURN]: returnStmt,
   [INIT_BLOCK]: initBlock,
+  [WHILE_LOOP]: whileLoop,
 };

@@ -14,7 +14,7 @@ export default function initBlock(tree, transpile, plugins) {
 
   declarations.push(plugins.scopePlugin.closeScope());
 
-  const header = declarations.filter(dec => dec !== '').join('\n');
+  const header = declarations.filter(dec => dec !== '').join('\n\n');
 
   return `${header === '' ? '' : header + '\n'}${blockRes}`;
 }
