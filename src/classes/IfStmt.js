@@ -12,10 +12,10 @@ class IfStmt {
     if (this.elseBlk === null) {
       return `IfStmt( ${this.condition}, ${this.block} )`;
     }
-    return `IfStmt( ${this.condition}, ${this.block}, , ${this.elseBlk} )`;
+    return `IfStmt( ${this.condition}, ${this.block}, ${this.elseBlock} )`;
   }
 }
 
-export default function creator(condition, block, elseBlock) {
+export default function creator(condition, block, elseBlock = null) {
   return new IfStmt(condition, block, elseBlock);
 }
