@@ -21,5 +21,5 @@ export const NOT_IF_ONLY_IF = 'NOT_IF_ONLY_IF';
 export const PREFIX_PLUS = 'PREFIX_PLUS';
 export const PREFIX_TIMES = 'PREFIX_TIMES';
 export const PREFIX_MINUS = 'PREFIX_MINUS';
-export const PREFIX_LEGTH = 'PREFIX_LENGTH';
+export const PREFIX_LENGTH = 'PREFIX_LENGTH';
 export const PREFIX_NOT = 'PREFIX_NOT';
