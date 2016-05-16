@@ -25,9 +25,9 @@ export default function comparison({ operator, lefthand, righthand }, transpile,
     case LESS_THAN:
       return `(${transpile(lefthand)} < ${transpile(righthand)})`;
     case IS_IN:
-      return `${transpile(lefthand)}.contains(${transpile(righthand)})`;
+      return `${transpile(righthand)}.contains(${transpile(lefthand)})`;
     case IS_NOT_IN:
-      return `!${transpile(lefthand)}.contains(${transpile(righthand)})`;
+      return `!${transpile(righthand)}.contains(${transpile(lefthand)})`;
     default:
       throw new UnsupportedError(`Comparison operator ${operator}`);
   }

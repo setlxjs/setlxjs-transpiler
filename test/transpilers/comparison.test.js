@@ -47,13 +47,13 @@ describe('transpilers/comparison', () => {
 
   it('should tanspile comparisons with IS_IN operator', () => {
     transpile(Comparison(ops.IS_IN, Identifier('x'), Identifier('y'))).should.be.exactly(
-      'x.contains(y)'
+      'y.contains(x)'
     );
   });
 
   it('should tanspile comparisons with IS_NOT_IN operator', () => {
     transpile(Comparison(ops.IS_NOT_IN, Identifier('x'), Identifier('y'))).should.be.exactly(
-      '!x.contains(y)'
+      '!y.contains(x)'
     );
   });
 });
