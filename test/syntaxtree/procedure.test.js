@@ -47,4 +47,24 @@ describe('syntaxtree/Procedure', () => {
       )
     ));
   });
+
+  it('should parse normal (no closure) lambda functions', () => {
+    parser('x |=> true;').should.eql(makeStmt(
+      Procedure(
+        [Identifier('x')],
+        Block([Return(Primitive(types.BOOLEAN, true))]),
+        false
+      )
+    ));
+  });
+
+  it('should parse closure lambda functions', () => {
+    parser('x |-> true;').should.eql(makeStmt(
+      Procedure(
+        [Identifier('x')],
+        Block([Return(Primitive(types.BOOLEAN, true))]),
+        true
+      )
+    ));
+  });
 });

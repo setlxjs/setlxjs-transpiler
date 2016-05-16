@@ -141,7 +141,7 @@ LambdaProcedure
   = params:LambdaParameters WS
       clos:('|->' { return true; } / '|=>' { return false; })
     WS expr:Expression
-    { return Procedure(params, Block(Statement(expr)), clos); }
+    { return Procedure(params, Block([Return(expr)]), clos); }
 
 LambdaParameters
   = vari:Variable
