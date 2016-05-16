@@ -7,6 +7,7 @@ const Primitive = require('../../build/classes/Primitive');
 const Identifier = require('../../build/classes/Identifier');
 const Iterator = require('../../build/classes/Iterator');
 const Conjunction = require('../../build/classes/Conjunction');
+const AssignableList = require('../../build/classes/AssignableList');
 const List = require('../../build/classes/List');
 
 const types = require('../../build/constants/types');
@@ -26,6 +27,15 @@ describe('transpilers/generator', () => {
     // x: x in [1, 2, 3]
     const tree = Generator(Identifier('x'), [Iterator(Identifier('x'), list)]);
     transpile(tree).should.eql('$gen([1, 2, 3]).map(x => x)');
+  });
+
+  it('should transpile generators with destructuring assignments', () => {
+    // x: [x, y] in [1, 2, 3]
+    const tree = Generator(
+      Identifier('x'),
+      [Iterator(AssignableList([Identifier('x'), Identifier('y')]), list)]
+    );
+    transpile(tree).should.eql('$gen([1, 2, 3]).map(([x, y]) => x)');
   });
 
   it('should transpile generators with a filter', () => {

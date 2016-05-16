@@ -1,8 +1,10 @@
+import { IDENTIFIER } from '../constants/tokens';
+
 export default function generator(tree, transpile, { helperPlugin }) {
   let itParams;
   const itParamsList = tree.iterators.map(it => transpile(it.assignable));
   // if only one arg create "x =>", else "(x, y) =>"
-  if (itParamsList.length === 1) {
+  if (itParamsList.length === 1 && tree.iterators[0].assignable.token === IDENTIFIER) {
     itParams = itParamsList[0];
   } else {
     itParams = `(${itParamsList.join(', ')})`;
