@@ -19,6 +19,7 @@ import call from './call';
 import returnStmt from './returnStmt';
 import initBlock from './initBlock';
 import whileLoop from './whileLoop';
+import comparison from './comparison';
 
 import {
   PRIMITIVE,
@@ -42,6 +43,7 @@ import {
   RETURN,
   INIT_BLOCK,
   WHILE_LOOP,
+  COMPARISON,
 } from '../constants/tokens';
 
 export default {
@@ -66,4 +68,5 @@ export default {
   [RETURN]: returnStmt,
   [INIT_BLOCK]: initBlock,
   [WHILE_LOOP]: whileLoop,
+  [COMPARISON]: comparison,
 };
