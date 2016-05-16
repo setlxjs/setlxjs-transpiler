@@ -6,7 +6,7 @@ const PrefixOperation = require('../../build/classes/PrefixOperation');
 
 const ops = require('../../build/constants/operators');
 
-describe('transpilers/PREFIX_OPERATION', () => {
+describe('transpilers/prefixOperation', () => {
   it('should transpile prefix minus operations', () => {
     transpile(PrefixOperation(ops.PREFIX_MINUS, Identifier('x'))).should.be.exactly('-x');
   });
