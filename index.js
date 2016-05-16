@@ -48,7 +48,7 @@ module.exports = exp;
 if (process.argv[2]) {
   content = fs.readFileSync(process.argv[2]).toString();
   exp(content, { tree: false })
-    .then(function (err, result) {
+    .then(function (result) {
       console.log(result);
     }).catch(function (error) {
       console.log(error.stack);
