@@ -28,4 +28,10 @@ describe('transpilers/PREFIX_OPERATION', () => {
       'x.length'
     );
   });
+
+  it('should transpile the prefix not operator', () => {
+    transpile(PrefixOperation(ops.PREFIX_NOT, Identifier('x'))).should.be.exactly(
+      '!x'
+    );
+  });
 });

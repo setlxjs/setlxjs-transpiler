@@ -36,4 +36,10 @@ describe('syntaxtree/PrefixOperation', () => {
       PrefixOperation(ops.PREFIX_LENGTH, Identifier('x'))
     ));
   });
+
+  it('should parse prefix operations with PREFIX_NOT', () => {
+    parser('!x;').should.eql(makeStmt(
+      PrefixOperation(ops.PREFIX_NOT, Identifier('x'))
+    ));
+  });
 });
