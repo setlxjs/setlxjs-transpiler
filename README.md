@@ -40,14 +40,14 @@ gulp watch
 ### Running the tests
 
 Make sure you compiled the latest version of your source code with `gulp` (see above).
-SetlX.js uses Mocha to run the tests. To use Mocha install it globally or run the local version instead (leave out `node_modules/.bin/` for global):
-
-Test the parser againt various SetlX programs.
+SetlX.js uses Mocha to run the tests. To run the tests simply use the `npm test` command:
 ```
-node_modules/.bin/mocha test/grammar/parser.test.js
+npm test
 ```
 
-Test the generated syntax tree.
+### Linting the code
+
+Please run the linter and make sure no errors occur before sending in a pull request:
 ```
-node_modules/.bin/mocha test/syntaxtree/*.test.js
+npm run lint
 ```
