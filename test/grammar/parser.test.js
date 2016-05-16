@@ -4,15 +4,16 @@ require('should');
 
 const parser = require('../../build/parse');
 
-const BASE = './test/grammar';
+const BASE = './test/grammar/programs';
+const valid = ['prime-sieve.stlx', 'wolf-goat-cabbage.stlx'];
 
 describe('The parser', () => {
-  const programs = fs.readdirSync(path.join(BASE, 'programs'));
+  const programs = fs.readdirSync(BASE);
 
-  programs.forEach(file => {
+  programs.filter(file => valid.indexOf(file) >= 0).forEach(file => {
     it(`should parse ${file}`, done => {
-      fs.readFile(path.join(BASE, 'programs', file), (err, data) => {
-        if ( err ) throw err;
+      fs.readFile(path.join(BASE, file), (err, data) => {
+        if (err) throw err;
 
         parser(data.toString());
 
