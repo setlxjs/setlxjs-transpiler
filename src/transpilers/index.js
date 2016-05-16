@@ -20,6 +20,7 @@ import returnStmt from './returnStmt';
 import initBlock from './initBlock';
 import whileLoop from './whileLoop';
 import comparison from './comparison';
+import prefixOperation from './prefixOperation';
 
 import {
   PRIMITIVE,
@@ -44,6 +45,7 @@ import {
   INIT_BLOCK,
   WHILE_LOOP,
   COMPARISON,
+  PREFIX_OPERATION,
 } from '../constants/tokens';
 
 export default {
@@ -69,4 +71,5 @@ export default {
   [INIT_BLOCK]: initBlock,
   [WHILE_LOOP]: whileLoop,
   [COMPARISON]: comparison,
+  [PREFIX_OPERATION]: prefixOperation,
 };
