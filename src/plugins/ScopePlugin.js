@@ -1,14 +1,16 @@
 class Scope {
-  constructor() {
+  constructor(parent, ignore = []) {
+    this.parent = parent;
     this.vars = [];
+    this.ignore = ignore;
   }
 
   has(name) {
-    return this.vars.indexOf(name) >= 0;
+    return (this.parent && this.parent.has(name)) || this.vars.indexOf(name) >= 0;
   }
 
   register(name) {
-    if (!this.has(name)) {
+    if (!this.has(name) && this.ignore.indexOf(name) < 0) {
       this.vars.push(name);
     }
   }
@@ -28,8 +30,8 @@ class ScopePlugin {
     return this.scopes[0];
   }
 
-  newScope() {
-    this.scopes.unshift(new Scope());
+  newScope(ignore) {
+    this.scopes.unshift(new Scope(this.scopes[0], ignore));
   }
 
   closeScope() {
