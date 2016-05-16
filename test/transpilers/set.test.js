@@ -23,6 +23,10 @@ function bool(val) {
 const list = List([int(1), int(2), int(3)]);
 
 describe('transpilers/set', () => {
+  it('should transpile empty sets', () => {
+    transpile(SetlSet()).should.be.exactly('$s()');
+  });
+
   it('should transpile listings', () => {
     transpile(SetlSet([int(1), int(23), int(12)])).should.be.exactly('$s([1, 23, 12])');
   });

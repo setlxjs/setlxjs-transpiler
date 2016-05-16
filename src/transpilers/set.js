@@ -1,6 +1,10 @@
 import { RANGE, GENERATOR } from '../constants/tokens';
 
 export default function set({ builder }, transpile, { helperPlugin }) {
+  if (typeof builder === 'undefined' || builder === null) {
+    const setFn = helperPlugin.request('s');
+    return `${setFn}()`;
+  }
   if (builder.token === RANGE) {
     const fnName = helperPlugin.request('range');
     const setFn = helperPlugin.request('s');
