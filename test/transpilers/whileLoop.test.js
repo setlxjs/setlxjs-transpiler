@@ -15,6 +15,6 @@ describe('transpilers/whileLoop', () => {
     transpile(WhileLoop(
       Primitive(types.BOOLEAN, true),
       Block([Statement(Assignment(Identifier('x'), Primitive(types.INTEGER, 1)))])
-    )).should.be.exactly('while (true) {\nx = 1;\n}');
+    )).should.be.exactly('while (true) {\n  x = 1;\n}');
   });
 });
