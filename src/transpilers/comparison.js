@@ -10,7 +10,7 @@ import {
 } from '../constants/operators';
 import UnsupportedError from '../errors/UnsupportedError';
 
-export default function sum({ operator, lefthand, righthand }, transpile, { helperPlugin }) {
+export default function comparison({ operator, lefthand, righthand }, transpile, { helperPlugin }) {
   switch (operator) {
     case EQUAL:
       return `${helperPlugin.request('equal')}(${transpile(lefthand)}, ${transpile(righthand)})`;

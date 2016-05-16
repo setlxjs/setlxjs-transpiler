@@ -22,6 +22,7 @@ import whileLoop from './whileLoop';
 import comparison from './comparison';
 import prefixOperation from './prefixOperation';
 import exponential from './exponential';
+import forLoop from './forLoop';
 
 import {
   PRIMITIVE,
@@ -48,6 +49,7 @@ import {
   COMPARISON,
   PREFIX_OPERATION,
   EXPONENTIAL,
+  FOR_LOOP,
 } from '../constants/tokens';
 
 export default {
@@ -75,4 +77,5 @@ export default {
   [COMPARISON]: comparison,
   [PREFIX_OPERATION]: prefixOperation,
   [EXPONENTIAL]: exponential,
+  [FOR_LOOP]: forLoop,
 };
