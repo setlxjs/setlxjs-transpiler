@@ -201,7 +201,7 @@ Reduce
 
 PrefixOperation
   = f1:Factor f2:(WS '**' WS PrefixOperation)?
-    { return f2 ? Exponential(f1, f2) : f1; }
+    { return f2 ? Exponential(f1, f2[3]) : f1; }
   / '+/' WS pre:PrefixOperation
     { return PrefixOperation(ops.PREFIX_PLUS, pre); }
   / '*/' WS pre:PrefixOperation
