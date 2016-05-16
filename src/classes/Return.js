@@ -1,7 +1,7 @@
 import { RETURN } from '../constants/tokens';
 
 class Return {
-  constructor(expression) {
+  constructor(expression = null) {
     this.token = RETURN;
     this.expression = expression;
   }
@@ -11,6 +11,6 @@ class Return {
   }
 }
 
-export default function creator(expression) {
+export default function creator(expression = null) {
   return new Return(expression);
 }

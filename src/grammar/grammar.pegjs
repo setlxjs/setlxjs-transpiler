@@ -62,6 +62,8 @@ Statement
     { return Statement(assign); }
   / WS assign:AssignmentDirect WS ';'
     { return Statement(assign); }
+  / WS 'return' WS expr:Expression? WS ';'
+    { return Return(expr); }
   / WS expr:Expression WS ';'
     { return Statement(expr); }
   / WS 'for' WS '(' iterators:IteratorChain expr:(WS '|' WS Expression)? ')' WS '{' blk:Block '}'
@@ -91,8 +93,6 @@ Statement
     )*
     elseblk:(WS 'else' WS '{' blk:Block '}' { return blk; })?
     { return IfStmt(expr, blk, elseif.reduceRight(reduceApply, elseblk)); }
-  / WS 'return' WS expr:Expression? WS ';'
-    { return Return(expr); }
 
 Variable
   = id:ID

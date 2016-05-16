@@ -1,3 +1,3 @@
 export default function returnStmt({ expression }, transpile) {
-  return `return ${transpile(expression)};`;
+  return expression ? `return ${transpile(expression)};` : 'return;';
 }
