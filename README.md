@@ -51,3 +51,17 @@ Please run the linter and make sure no errors occur before sending in a pull req
 ```
 npm run lint
 ```
+
+### Transpiler in Action (will be removed)
+
+If you have compiled the `src` directory as described above you can use the transpiler to output a transpiled file to the stdout:
+
+```
+node index.js <file>
+```
+
+For example you can transpile the `prime-sieve.stlx` in the repo!
+
+```
+node index.js test/grammar/programs/prime-sieve.stlx
+```
