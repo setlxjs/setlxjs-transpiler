@@ -26,7 +26,7 @@ describe('transpilers/generator', () => {
   it('should transpile simple generators', () => {
     // x: x in [1, 2, 3]
     const tree = Generator(Identifier('x'), [Iterator(Identifier('x'), list)]);
-    transpile(tree).should.eql('$gen([1, 2, 3]).map(x => x)');
+    transpile(tree).should.eql('$gen($l(1, 2, 3)).map(x => x)');
   });
 
   it('should transpile generators with destructuring assignments', () => {
@@ -35,13 +35,13 @@ describe('transpilers/generator', () => {
       Identifier('x'),
       [Iterator(AssignableList([Identifier('x'), Identifier('y')]), list)]
     );
-    transpile(tree).should.eql('$gen([1, 2, 3]).map(([x, y]) => x)');
+    transpile(tree).should.eql('$gen($l(1, 2, 3)).map(([x, y]) => x)');
   });
 
   it('should transpile generators with a filter', () => {
     // x: x in [1, 2, 3] | true
     const tree = Generator(Identifier('x'), [Iterator(Identifier('x'), list)], bool(true));
-    transpile(tree).should.eql('$gen([1, 2, 3]).filter(x => true).map(x => x)');
+    transpile(tree).should.eql('$gen($l(1, 2, 3)).filter(x => true).map(x => x)');
   });
 
   it('should transpile generators with multiple iterators', () => {
@@ -51,6 +51,6 @@ describe('transpilers/generator', () => {
       [Iterator(Identifier('x'), list), Iterator(Identifier('y'), list)]
     );
 
-    transpile(tree).should.eql('$gen([1, 2, 3], [1, 2, 3]).map((x, y) => x && y)');
+    transpile(tree).should.eql('$gen($l(1, 2, 3), $l(1, 2, 3)).map((x, y) => x && y)');
   });
 });

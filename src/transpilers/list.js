@@ -5,9 +5,9 @@ export default function list(tree, transpile, { helperPlugin }) {
     const fnName = helperPlugin.request('range');
     const fromExpr = transpile(tree.builder.fromExpr);
     const toExpr = transpile(tree.builder.toExpr);
-    return `${fnName}(${fromExpr}, ${toExpr})`;
+    return `${fnName}(${fromExpr}, ${toExpr}).list`;
   } else if (tree.builder.token === GENERATOR) {
     return `${transpile(tree.builder)}.list`;
   }
-  return `[${tree.builder.map(transpile).join(', ')}]`;
+  return `${helperPlugin.request('l')}(${tree.builder.map(transpile).join(', ')})`;
 }

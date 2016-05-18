@@ -37,6 +37,6 @@ describe('transpilers/set', () => {
 
   it('should transpile generators', () => {
     const tree = SetlSet(Generator(Identifier('x'), [Iterator(Identifier('x'), list)], bool(true)));
-    transpile(tree).should.be.exactly('$gen([1, 2, 3]).filter(x => true).map(x => x).set');
+    transpile(tree).should.be.exactly('$gen($l(1, 2, 3)).filter(x => true).map(x => x).set');
   });
 });
