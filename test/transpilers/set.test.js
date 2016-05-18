@@ -28,11 +28,11 @@ describe('transpilers/set', () => {
   });
 
   it('should transpile listings', () => {
-    transpile(SetlSet([int(1), int(23), int(12)])).should.be.exactly('$s([1, 23, 12])');
+    transpile(SetlSet([int(1), int(23), int(12)])).should.be.exactly('$s(1, 23, 12)');
   });
 
   it('should transpile ranges', () => {
-    transpile(SetlSet(Range(int(1), int(3000)))).should.be.exactly('$s($range(1, 3000))');
+    transpile(SetlSet(Range(int(1), int(3000)))).should.be.exactly('$range(1, 3000).set');
   });
 
   it('should transpile generators', () => {
