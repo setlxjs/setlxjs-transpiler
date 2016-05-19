@@ -1,6 +1,7 @@
 export const ASSIGNABLE_LIST = 'ASSIGNABLE_LIST';
 export const ASSIGNMENT = 'ASSIGNMENT';
 export const BLOCK = 'BLOCK';
+export const BREAK_STMT = 'BREAK_STMT';
 export const CALL = 'CALL';
 export const COLLECTION_ACCESS = 'COLLECTION_ACCESS';
 export const COMPARISON = 'COMPARISON';

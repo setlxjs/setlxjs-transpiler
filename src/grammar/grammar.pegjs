@@ -2,6 +2,7 @@
   var AssignableList = require('../classes/AssignableList');
   var Assignment = require('../classes/Assignment');
   var Block = require('../classes/Block');
+  var Break = require('../classes/Break');
   var Call = require('../classes/Call');
   var CaseStmt = require('../classes/CaseStmt');
   var Comparison = require('../classes/Comparison');
@@ -64,6 +65,8 @@ Statement
     { return Statement(assign); }
   / WS 'return' WS expr:Expression? WS ';'
     { return Return(expr); }
+  / WS 'break' WS ';'
+    { return Break(); }
   / WS expr:Expression WS ';'
     { return Statement(expr); }
   / WS 'for' WS '(' iterators:IteratorChain expr:(WS '|' WS Expression)? ')' WS '{' blk:Block '}'
