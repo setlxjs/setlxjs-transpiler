@@ -6,6 +6,6 @@ const Exponential = require('../../build/classes/Exponential');
 
 describe('transpilers/exponential', () => {
   it('should transpile the exponential operator to Math.pow', () => {
-    transpile(Exponential(Identifier('x'), Identifier('y'))).should.be.exactly('Math.pow(x, y)');
+    transpile(Exponential(Identifier('x'), Identifier('y'))).should.be.exactly('$pow(x, y)');
   });
 });
