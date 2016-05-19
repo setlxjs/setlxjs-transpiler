@@ -23,6 +23,7 @@ import comparison from './comparison';
 import prefixOperation from './prefixOperation';
 import exponential from './exponential';
 import forLoop from './forLoop';
+import breakStmt from './breakStmt';
 
 import {
   PRIMITIVE,
@@ -50,6 +51,7 @@ import {
   PREFIX_OPERATION,
   EXPONENTIAL,
   FOR_LOOP,
+  BREAK_STMT,
 } from '../constants/tokens';
 
 export default {
@@ -78,4 +80,5 @@ export default {
   [PREFIX_OPERATION]: prefixOperation,
   [EXPONENTIAL]: exponential,
   [FOR_LOOP]: forLoop,
+  [BREAK_STMT]: breakStmt,
 };
