@@ -10,6 +10,7 @@
   var CollectionAccess = require('../classes/CollectionAccess');
   var Disjunction = require('../classes/Disjunction');
   var Exponential = require('../classes/Exponential');
+  var Forall = require('../classes/Forall');
   var ForLoop = require('../classes/ForLoop');
   var FunctionCall = require('../classes/FunctionCall');
   var Generator = require('../classes/Generator');
@@ -217,6 +218,8 @@ PrefixOperation
 Factor
   = '!' WS fact:Factor
     { return PrefixOperation(ops.PREFIX_NOT, fact)}
+  / 'forall' WS '(' WS its:IteratorChain WS '|' WS cond:Expression WS ')'
+    { return Forall(its, cond); }
   / vali:Value WS factorial:('!')?
     { return factorial ? Factorial(vali) : vali; }
   / receiv:(

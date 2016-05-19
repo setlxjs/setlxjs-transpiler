@@ -5,7 +5,7 @@ require('should');
 const parser = require('../../build/parse');
 
 const BASE = './test/grammar/programs';
-const valid = ['prime-sieve.stlx', 'wolf-goat-cabbage.stlx'];
+const valid = ['primes-while.stlx', 'prime-sieve.stlx', 'wolf-goat-cabbage.stlx'];
 
 describe('The parser', () => {
   const programs = fs.readdirSync(BASE);

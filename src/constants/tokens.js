@@ -8,6 +8,7 @@ export const COMPARISON = 'COMPARISON';
 export const CONJUNCTION = 'CONJUNCTION';
 export const DISJUNCTION = 'DISJUNCTION';
 export const EXPONENTIAL = 'EXPONENTIAL';
+export const FORALL = 'FORALL';
 export const FOR_LOOP = 'FOR_LOOP';
 export const FUNCTION_CALL = 'FUNCTION_CALL';
 export const GENERATOR = 'GENERATOR';
