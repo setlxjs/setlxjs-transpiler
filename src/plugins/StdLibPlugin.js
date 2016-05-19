@@ -4,7 +4,7 @@ const stdlib = ['print', 'load'];
 
 export default class StdLibPlugin extends ImportPlugin {
   constructor() {
-    super('stdlib', 'setlxjs-lib/std');
+    super('stdlib', 'setlxjs-lib/dist/std');
   }
 
   isStd(fun) {

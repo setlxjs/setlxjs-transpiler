@@ -18,7 +18,7 @@ describe('plugins/StdLibPlugin', () => {
     plugin.isStd('printx');
     plugin.isStd('print');
 
-    plugin.imports().should.be.exactly(`var $$import$stdlib = require('setlxjs-lib/std');
+    plugin.imports().should.be.exactly(`var $$import$stdlib = require('setlxjs-lib/dist/std');
 var print = $$import$stdlib.print;`);
   });
 });

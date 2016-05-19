@@ -18,7 +18,7 @@ describe('plugins/HelperPlugin', () => {
     plugin.request('range');
     plugin.request('add');
 
-    plugin.imports().should.be.exactly(`var $$import$helper = require('setlxjs-lib/hlp');
+    plugin.imports().should.be.exactly(`var $$import$helper = require('setlxjs-lib/dist/hlp');
 var $range = $$import$helper.range;
 var $add = $$import$helper.add;`);
   });
