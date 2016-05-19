@@ -3,24 +3,24 @@ require('should');
 const transpile = require('../../build/transpile')();
 const Identifier = require('../../build/classes/Identifier');
 const Primitive = require('../../build/classes/Primitive');
-const Forall = require('../../build/classes/Forall');
+const Exists = require('../../build/classes/Exists');
 const Iterator = require('../../build/classes/Iterator');
 
 const types = require('../../build/constants/types');
 
-describe('transpilers/forall', () => {
-  it('should transpile a forall with one iterator', () => {
+describe('transpilers/exists', () => {
+  it('should transpile a exists with one iterator', () => {
     transpile(
-      Forall(
+      Exists(
         [Iterator(Identifier('i'), Identifier('x'))],
         Primitive(types.BOOLEAN, true)
       )
-    ).should.be.exactly('$gen(x).every(i => true)');
+    ).should.be.exactly('$gen(x).some(i => true)');
   });
 
-  it('should transpile a forall with multiple iterators', () => {
+  it('should transpile a exists with multiple iterators', () => {
     transpile(
-      Forall(
+      Exists(
         [
           Iterator(Identifier('i'), Identifier('x')),
           Iterator(Identifier('t'), Identifier('y')),
@@ -28,6 +28,6 @@ describe('transpilers/forall', () => {
         ],
         Primitive(types.BOOLEAN, true)
       )
-    ).should.be.exactly('$gen(x, y, x).every((i, t, k) => true)');
+    ).should.be.exactly('$gen(x, y, x).some((i, t, k) => true)');
   });
 });

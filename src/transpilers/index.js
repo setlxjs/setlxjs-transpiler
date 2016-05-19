@@ -25,6 +25,7 @@ import exponential from './exponential';
 import forLoop from './forLoop';
 import breakStmt from './breakStmt';
 import forall from './forall';
+import exists from './exists';
 
 import {
   PRIMITIVE,
@@ -54,6 +55,7 @@ import {
   FOR_LOOP,
   BREAK_STMT,
   FORALL,
+  EXISTS,
 } from '../constants/tokens';
 
 export default {
@@ -84,4 +86,5 @@ export default {
   [FOR_LOOP]: forLoop,
   [BREAK_STMT]: breakStmt,
   [FORALL]: forall,
+  [EXISTS]: exists,
 };
