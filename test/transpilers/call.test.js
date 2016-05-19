@@ -9,7 +9,7 @@ const FunctionCall = require('../../build/classes/FunctionCall');
 describe('transpilers/call', () => {
   it('should transpile calls with collection accesses', () => {
     const tree = Call(Identifier('myFn'), CollectionAccess(Identifier('x')));
-    transpile(tree).should.be.exactly('myFn[x]');
+    transpile(tree).should.be.exactly('myFn.get(x)');
   });
 
   it('should transpile calls with function calls', () => {

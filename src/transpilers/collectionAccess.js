@@ -1,3 +1,3 @@
 export default function collectionAccess({ accessor }, transpile) {
-  return `[${transpile(accessor)}]`;
+  return `.get(${transpile(accessor)})`;
 }
