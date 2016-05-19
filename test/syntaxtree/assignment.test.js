@@ -7,6 +7,8 @@ const Assignment = require('../../build/classes/Assignment');
 const Primitive = require('../../build/classes/Primitive');
 const Sum = require('../../build/classes/Sum');
 const Product = require('../../build/classes/Product');
+const Call = require('../../build/classes/Call');
+const CollectionAccess = require('../../build/classes/CollectionAccess');
 
 const types = require('../../build/constants/types');
 const ops = require('../../build/constants/operators');
@@ -114,6 +116,15 @@ describe('syntaxtree/Assignments', () => {
       Assignment(
         AssignableList([Identifier('x'), Identifier('y')]),
         Identifier('pair')
+      )
+    ));
+  });
+
+  it('should parse list element assignments', () => {
+    parser('mylist[1] := 2;').should.eql(makeStmt(
+      Assignment(
+        Call(Identifier('mylist'), CollectionAccess(Primitive(types.INTEGER, 1))),
+        Primitive(types.INTEGER, 2)
       )
     ));
   });

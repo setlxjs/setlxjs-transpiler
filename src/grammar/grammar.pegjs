@@ -119,8 +119,8 @@ AssignmentDirect
     { return Assignment(asable, expr); }
 
 Assignable
-  = vari:Variable
-    { return vari;  }
+  = vari:Variable coll:('[' Expression ']')?
+    { return coll ? Call(vari, CollectionAccess(coll[1])) : vari;  }
   / '[' WS aslist:ExplicitAssignList WS ']'
     { return aslist; }
 
