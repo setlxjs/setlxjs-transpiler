@@ -24,6 +24,7 @@ import prefixOperation from './prefixOperation';
 import exponential from './exponential';
 import forLoop from './forLoop';
 import breakStmt from './breakStmt';
+import forall from './forall';
 
 import {
   PRIMITIVE,
@@ -52,6 +53,7 @@ import {
   EXPONENTIAL,
   FOR_LOOP,
   BREAK_STMT,
+  FORALL,
 } from '../constants/tokens';
 
 export default {
@@ -81,4 +83,5 @@ export default {
   [EXPONENTIAL]: exponential,
   [FOR_LOOP]: forLoop,
   [BREAK_STMT]: breakStmt,
+  [FORALL]: forall,
 };
