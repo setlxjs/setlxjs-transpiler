@@ -4,6 +4,10 @@ class Break {
   constructor() {
     this.token = BREAK_STMT;
   }
+
+  toString() {
+    return 'Break()';
+  }
 }
 
 export default function creator() {
