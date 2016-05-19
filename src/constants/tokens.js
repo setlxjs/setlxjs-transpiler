@@ -7,6 +7,7 @@ export const COLLECTION_ACCESS = 'COLLECTION_ACCESS';
 export const COMPARISON = 'COMPARISON';
 export const CONJUNCTION = 'CONJUNCTION';
 export const DISJUNCTION = 'DISJUNCTION';
+export const EXISTS = 'EXISTS';
 export const EXPONENTIAL = 'EXPONENTIAL';
 export const FORALL = 'FORALL';
 export const FOR_LOOP = 'FOR_LOOP';
