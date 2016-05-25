@@ -1,6 +1,6 @@
 require('should');
 
-const transpile = require('../../build/transpile')();
+const transpile = require('../../build/createTranspiler')();
 const Identifier = require('../../build/classes/Identifier');
 const Primitive = require('../../build/classes/Primitive');
 const Exists = require('../../build/classes/Exists');
