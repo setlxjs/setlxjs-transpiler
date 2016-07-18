@@ -1,6 +1,6 @@
 import ImportPlugin from './ImportPlugin';
 
-const stdlib = ['print', 'load', 'abs', 'cos'];
+const stdlib = ['print', 'load', 'abs', 'cos', 'arb'];
 
 export default class StdLibPlugin extends ImportPlugin {
   constructor() {
