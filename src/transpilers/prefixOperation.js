@@ -16,7 +16,7 @@ export default function prefixOperation({ operator, operant }, transpile, { help
     case PREFIX_TIMES:
       return `${transpile(operant)}.reduce(${helperPlugin.request('mul')})`;
     case PREFIX_LENGTH:
-      return `${transpile(operant)}.length`;
+      return `${transpile(operant)}.size`;
     case PREFIX_NOT:
       return `!${transpile(operant)}`;
     default:
