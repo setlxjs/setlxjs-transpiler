@@ -25,7 +25,7 @@ describe('transpilers/prefixOperation', () => {
 
   it('should transpile prefix length operations', () => {
     transpile(PrefixOperation(ops.PREFIX_LENGTH, Identifier('x'))).should.be.exactly(
-      'x.length'
+      'x.size'
     );
   });
 

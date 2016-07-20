@@ -11,10 +11,10 @@ describe('transpilers/conjunction', () => {
   it('should transpile conjunctions correctly', () => {
     transpile(
       Conjunction(Identifier('myid'), Primitive(types.BOOLEAN, true))
-    ).should.be.exactly('myid && true');
+    ).should.be.exactly('(myid && true)');
 
     transpile(
       Conjunction(Identifier('x'), Identifier('y'))
-    ).should.be.exactly('x && y');
+    ).should.be.exactly('(x && y)');
   });
 });

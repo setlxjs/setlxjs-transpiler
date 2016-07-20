@@ -51,6 +51,6 @@ describe('transpilers/generator', () => {
       [Iterator(Identifier('x'), list), Iterator(Identifier('y'), list)]
     );
 
-    transpile(tree).should.eql('$gen($l(1, 2, 3), $l(1, 2, 3)).map((x, y) => x && y)');
+    transpile(tree).should.eql('$gen($l(1, 2, 3), $l(1, 2, 3)).map((x, y) => (x && y))');
   });
 });
