@@ -9,10 +9,12 @@ const types = require('../../build/constants/types');
 
 describe('transpilers/collectionAccess', () => {
   it('should transpile collection accesses with integers', () => {
-    transpile(CollectionAccess(Primitive(types.INTEGER, 4))).should.be.exactly('.get(4)');
+    transpile(CollectionAccess(Primitive(types.INTEGER, 4))).should.be.exactly(
+      '.get(4 < 0 ? 4 : 4 - 1)'
+    );
   });
 
   it('should transpile collection accesses with identifiers', () => {
-    transpile(CollectionAccess(Identifier('x'))).should.be.exactly('.get(x)');
+    transpile(CollectionAccess(Identifier('x'))).should.be.exactly('.get(x < 0 ? x : x - 1)');
   });
 });
