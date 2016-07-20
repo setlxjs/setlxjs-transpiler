@@ -14,7 +14,8 @@ export default function forLoop(tree, transpile, { helperPlugin, scopePlugin }) 
   ).join('\n') + '\n';
 
   const cFn = helperPlugin.request('combinations');
-  const combinations = `${cFn}(${tree.iterators.map(it => transpile(it.expression)).join(', ')})`;
+  const its = tree.iterators.map(it => transpile(it.expression) + '.toArray()').join(', ');
+  const combinations = `${cFn}(${its})`;
 
   return `${temp1} = ${combinations};
 for(${temp2} = 0; ${temp2} < ${temp1}.length; ++${temp2}) {

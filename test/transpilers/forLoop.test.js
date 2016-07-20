@@ -39,7 +39,7 @@ describe('transpilers/forLoop', () => {
         makeStmt(Primitive(types.BOOLEAN, true))
       )
     ).should.be.exactly(
-`_a = $combinations(x);
+`_a = $combinations(x.toArray());
 for(_b = 0; _b < _a.length; ++_b) {
   i = _a[_b][0];
   true;
@@ -69,7 +69,7 @@ for(_b = 0; _b < _a.length; ++_b) {
         makeStmt(Primitive(types.BOOLEAN, true))
       )
     ).should.be.exactly(
-`_a = $combinations(x, y, z);
+`_a = $combinations(x.toArray(), y.toArray(), z.toArray());
 for(_b = 0; _b < _a.length; ++_b) {
   i = _a[_b][0];
   t = _a[_b][1];
@@ -101,7 +101,7 @@ for(_b = 0; _b < _a.length; ++_b) {
         makeStmt(Primitive(types.BOOLEAN, true))
       )
     ).should.be.exactly(
-`_a = $combinations(x);
+`_a = $combinations(x.toArray());
 for(_b = 0; _b < _a.length; ++_b) {
   i = _a[_b][0];
   if (!$equal((i % 2), 0)) continue;
