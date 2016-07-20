@@ -17,13 +17,13 @@ export default function comparison({ operator, lefthand, righthand }, transpile,
     case NOT_EQUAL:
       return `!${helperPlugin.request('equal')}(${transpile(lefthand)}, ${transpile(righthand)})`;
     case GREATER_EQUAL_THAN:
-      return `(${transpile(lefthand)} >= ${transpile(righthand)})`;
+      return `${helperPlugin.request('gte')}(${transpile(lefthand)}, ${transpile(righthand)})`;
     case LESS_EQUAL_THAN:
-      return `(${transpile(lefthand)} <= ${transpile(righthand)})`;
+      return `${helperPlugin.request('lte')}(${transpile(lefthand)}, ${transpile(righthand)})`;
     case GREATER_THAN:
-      return `(${transpile(lefthand)} > ${transpile(righthand)})`;
+      return `${helperPlugin.request('gt')}(${transpile(lefthand)}, ${transpile(righthand)})`;
     case LESS_THAN:
-      return `(${transpile(lefthand)} < ${transpile(righthand)})`;
+      return `${helperPlugin.request('lt')}(${transpile(lefthand)}, ${transpile(righthand)})`;
     case IS_IN:
       return `${transpile(righthand)}.contains(${transpile(lefthand)})`;
     case IS_NOT_IN:

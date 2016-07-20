@@ -21,13 +21,13 @@ describe('transpilers/comparison', () => {
 
   it('should tanspile comparisons with GREATER_THAN operator', () => {
     transpile(Comparison(ops.GREATER_THAN, Identifier('x'), Identifier('y'))).should.be.exactly(
-      '(x > y)'
+      '$gt(x, y)'
     );
   });
 
   it('should tanspile comparisons with LESS_THAN operator', () => {
     transpile(Comparison(ops.LESS_THAN, Identifier('x'), Identifier('y'))).should.be.exactly(
-      '(x < y)'
+      '$lt(x, y)'
     );
   });
 
@@ -35,13 +35,13 @@ describe('transpilers/comparison', () => {
     transpile(
       Comparison(ops.GREATER_EQUAL_THAN, Identifier('x'), Identifier('y'))
     ).should.be.exactly(
-      '(x >= y)'
+      '$gte(x, y)'
     );
   });
 
   it('should tanspile comparisons with LESS_EQUAL_THAN operator', () => {
     transpile(Comparison(ops.LESS_EQUAL_THAN, Identifier('x'), Identifier('y'))).should.be.exactly(
-      '(x <= y)'
+      '$lte(x, y)'
     );
   });
 
