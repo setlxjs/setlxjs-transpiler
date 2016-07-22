@@ -25,7 +25,7 @@ function exp(input, options, cb) {
     }
   } else {
     try {
-      out = transpiler(input);
+      out = transpiler(input, opts.plugins);
       promise = Promise.resolve(out);
     } catch (error) {
       promise = Promise.reject(error);
