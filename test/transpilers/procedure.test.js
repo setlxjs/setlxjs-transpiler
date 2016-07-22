@@ -12,12 +12,12 @@ describe('transpilers/procedure', () => {
   it('should transpile procedures with a single argument correctly', () => {
     transpile(
       assign('myfunc', Procedure([Identifier('a')], Block([])))
-    ).should.be.exactly('function myfunc(a) {\n}');
+    ).should.be.exactly('myfunc = function(a) {\n}');
   });
 
   it('should transpile procedures with multiple arguments correctly', () => {
     transpile(
       assign('myfunc', Procedure([Identifier('a'), Identifier('b'), Identifier('c')], Block([])))
-    ).should.be.exactly('function myfunc(a, b, c) {\n}');
+    ).should.be.exactly('myfunc = function(a, b, c) {\n}');
   });
 });
