@@ -1,8 +1,6 @@
 /* eslint no-var: 0, func-names: 0, no-console: 0, prefer-arrow-callback: 0 */
-var fs = require('fs');
 var parser = require('./build/parse');
 var transpiler = require('./build/index');
-var content;
 
 function exp(input, options, cb) {
   var callback;
