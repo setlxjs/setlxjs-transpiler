@@ -10,14 +10,10 @@ describe('transpilers/identifier', () => {
     createTranspiler()(Identifier(name)).should.be.exactly(name);
   });
 
-  it('should register the identifier name to the scope plugin', () => {
-    const scopePlugin = { register: sinon.spy() };
+  it('should register the identifier to the standard library plugin', () => {
     const stdLibPlugin = { isStd: sinon.stub().returns(false) };
-    const transpile = createTranspiler({ scopePlugin, stdLibPlugin });
+    const transpile = createTranspiler({ stdLibPlugin });
     transpile(Identifier('myid'));
-
-    sinon.assert.calledOnce(scopePlugin.register);
-    sinon.assert.calledWith(scopePlugin.register, 'myid');
 
     sinon.assert.calledOnce(stdLibPlugin.isStd);
     sinon.assert.calledWith(stdLibPlugin.isStd, 'myid');

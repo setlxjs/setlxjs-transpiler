@@ -1,6 +1,4 @@
-export default function identifier({ name }, transpile, { scopePlugin, stdLibPlugin }) {
-  if (!stdLibPlugin.isStd(name)) {
-    scopePlugin.register(name);
-  }
+export default function identifier({ name }, transpile, { stdLibPlugin }) {
+  stdLibPlugin.isStd(name);
   return name;
 }
