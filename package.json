@@ -9,7 +9,9 @@
   "scripts": {
     "test": "mocha test/**/*.test.js",
     "lint": "eslint src/",
-    "prepublish": "gulp"
+    "prepublish": "gulp",
+    "build": "gulp",
+    "watch": "gulp watch"
   },
   "repository": {
     "type": "git",

@@ -22,19 +22,14 @@ Install dependencies
 npm install
 ```
 
-Install Gulp if you haven't already
+Compile the files with Gulp (via npm script)
 ```
-npm install -g gulp
-```
-
-Compile the files with Gulp
-```
-gulp
+npm run build
 ```
 
-Or let Gulp watch for changes
+Or let Gulp watch for changes (via npm script)
 ```
-gulp watch
+npm run watch
 ```
 
 ### Running the tests
@@ -52,16 +47,29 @@ Please run the linter and make sure no errors occur before sending in a pull req
 npm run lint
 ```
 
-### Transpiler in Action (will be removed)
+### Testing your code in action
 
-If you have compiled the `src` directory as described above you can use the transpiler to output a transpiled file to the stdout:
+Create the following folder structure by cloning all repositories into the same folder
+```
+setlxjs
+|-setlxjs-cli
+|-setlxjs-lib
+'-setlxjs-transpiler
+```
 
+Install dependencies in every packages. Then switch into `setlxjs-cli` and [link](https://docs.npmjs.com/cli/link) the other packages:
 ```
-node index.js <file>
+npm link ../setlxjs-lib
+npm link ../setlxjs-transpiler
 ```
 
-For example you can transpile the `prime-sieve.stlx` in the repo!
+This creates links to your projects as if your newest version is installed as a dependency and only has to be done once. Make sure to run the build process _every_ time you test your changes (`npm run build`, `npm run watch`).
 
+You can then use the command line transpiler:
 ```
-node index.js test/grammar/programs/prime-sieve.stlx
+node index.js c <file>
+# OR
+node index.js run <file>
 ```
+
+I usually have the `.stlx` files I am testing directly inside of the `setlxjs-cli` folder. The library is installed and linked there already.
