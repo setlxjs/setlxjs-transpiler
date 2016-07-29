@@ -49,6 +49,8 @@ npm run lint
 
 ### Testing your code in action
 
+__If you are on Unix use the [gist](https://gist.github.com/hendrikniemann/f666bc027e6ed10af9f918d2008a6e12) to setup the project!__
+
 Create the following folder structure by cloning all repositories into the same folder
 ```
 setlxjs
