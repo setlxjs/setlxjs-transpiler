@@ -28,8 +28,7 @@ function createLambdaMaker(tree, transpile, scopePlugin) {
   return expr => {
     let body;
     if (temps.length > 0) {
-      temps.push(`return ${transpile(expr)};`);
-      body = '{\n' + indent(2, temps.join('\n')) + '\n}';
+      body = '{\n' + indent(2, temps.join('\n') + `\nreturn ${transpile(expr)};`) + '\n}';
     } else {
       body = transpile(expr);
     }
