@@ -1,6 +1,9 @@
 require('should');
 
-const transpile = require('../../build/createTranspiler')();
+const sinon = require('sinon');
+
+const createTranspiler = require('../../build/createTranspiler');
+const transpile = createTranspiler();
 
 const Generator = require('../../build/classes/Generator');
 const Primitive = require('../../build/classes/Primitive');
@@ -30,12 +33,23 @@ describe('transpilers/generator', () => {
   });
 
   it('should transpile generators with destructuring assignments', () => {
+    const fakeScopePlugin = {
+      newScope: sinon.spy(),
+      closeScope: sinon.spy(),
+      getTempVar: sinon.stub().returns('_temp'),
+    };
+    const spiedTranspiler = createTranspiler({ scopePlugin: fakeScopePlugin });
     // x: [x, y] in [1, 2, 3]
     const tree = Generator(
       Identifier('x'),
       [Iterator(AssignableList([Identifier('x'), Identifier('y')]), list)]
     );
-    transpile(tree).should.eql('$gen($l(1, 2, 3)).map(([x, y]) => x)');
+    spiedTranspiler(tree).should.eql(
+      '$gen($l(1, 2, 3)).map((_temp) => {\n  var [x, y] = _temp.toArray();\n  return x;\n})'
+    );
+    sinon.assert.calledOnce(fakeScopePlugin.newScope);
+    sinon.assert.calledOnce(fakeScopePlugin.closeScope);
+    sinon.assert.calledOnce(fakeScopePlugin.getTempVar);
   });
 
   it('should transpile generators with a filter', () => {
