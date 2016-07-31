@@ -1,6 +1,6 @@
 import ImportPlugin from './ImportPlugin';
 
-const stdlib = [
+export const stdlib = [
   'print',
   'load',
   'abs',
