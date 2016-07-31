@@ -28,7 +28,6 @@ describe('transpilers/forLoop', () => {
 
     const stub = sinon.stub(plugins.scopePlugin, 'getTempVar');
     stub.onFirstCall().returns('_a');
-    stub.onSecondCall().returns('_b');
 
     const transpile = createTranspiler(plugins);
 
@@ -39,9 +38,7 @@ describe('transpilers/forLoop', () => {
         makeStmt(Primitive(types.BOOLEAN, true))
       )
     ).should.be.exactly(
-`_a = $combinations(x.toArray());
-for(_b = 0; _b < _a.length; ++_b) {
-  i = _a[_b][0];
+`for(i of x) {
   true;
 }`
     );
@@ -101,9 +98,7 @@ for(_b = 0; _b < _a.length; ++_b) {
         makeStmt(Primitive(types.BOOLEAN, true))
       )
     ).should.be.exactly(
-`_a = $combinations(x.toArray());
-for(_b = 0; _b < _a.length; ++_b) {
-  i = _a[_b][0];
+`for(i of x) {
   if (!$equal((i % 2), 0)) continue;
   true;
 }`
