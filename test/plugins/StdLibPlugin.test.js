@@ -1,4 +1,4 @@
-const StdLibPlugin = require('../../build/plugins/StdLibPlugin');
+const StdLibPlugin = require('../../build/plugins/StdLibPlugin').default;
 
 describe('plugins/StdLibPlugin', () => {
   it('should be able to construct', () => {
