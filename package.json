@@ -37,6 +37,7 @@
     "gulp-mocha": "^2.1.3",
     "gulp-peg": "^0.1.2",
     "mocha": "^2.4.5",
+    "setlxjs-lib": "^1.2.1",
     "should": "^8.3.1",
     "sinon": "^1.17.4"
   }
