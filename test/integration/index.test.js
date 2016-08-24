@@ -1,7 +1,11 @@
+require('should');
+
 const fs = require('fs');
 const path = require('path');
 const hlp = require('setlxjs-lib/dist/hlp');
 const std = require('setlxjs-lib/dist/std');
+const stdStringify = require('setlxjs-lib/dist/util/stringify').default;
+const stringify = str => stdStringify(str, false);
 
 const HelperPlugin = require('../../build/plugins/HelperPlugin');
 const StdLibPlugin = require('../../build/plugins/StdLibPlugin').default;
@@ -69,7 +73,10 @@ describe('integration tests', () => {
         )
         .then(setlxcode => {
           let output = '';
-          const print = str => { output += str + '\n'; };
+          const print = (...args) => {
+            const str = args.map(stringify).join('');
+            output += str + '\n';
+          };
           // eslint-disable-next-line no-new-func
           const code = new Function('$$stdLib', '$$hlpLib', 'print', setlxcode);
           code(std, hlp, print);

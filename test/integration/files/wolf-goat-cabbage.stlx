@@ -1,0 +1,100 @@
+// Es war einmal ein Bauer, der wollte mit einem wolf, einer goat und
+// einer Kiste cabbage über einen Fluss übersetzen.  In dem Boot war aber
+// nicht genug Platz für alles, der Bauer konnte maximal ein Tiere oder
+// das Gemüse mitnehmen.  Er konnte aber auch wolf und goat nicht
+// alleine lassen, denn dann hätte der wolf die goat gefressen.
+// Ebensowenig konnte er die goat mit dem cabbage alleine lassen, denn
+// dann hätte die goat den cabbage gefressen.
+
+
+// The product call add(p,q) computes the sum of the lists p and q.
+// The last point of p has to be the first point of q.
+add := procedure(p, q) {
+    return p + [ q[2] ];
+};
+noCycle := procedure(l1, l2) {
+    return #({ x : x in l1 } * { x : x in l2 }) == 1;
+};
+pathProduct := procedure(p, q) {
+    return { add(x,y) : x in p, y in q | x[-1] == y[1] && noCycle(x,y) };
+};
+
+// Check wether there is a path from x to y in R and compute it.
+findPath := procedure(x, y, r) {
+    p := { [x] };
+    while (true) {
+        oldP  := p;
+        p     := p + pathProduct(p, r);
+        found := { l : l in p | l[-1] == y };
+        if (found != {}) {
+            return arb(found);
+        }
+        if (p == oldP) {
+            print("rock bottom" + p);
+            return;
+        }
+    }
+};
+
+////////////////////////////////////////////////////////////////////////////////
+//                                                                            //
+// Problem specific code                                                      //
+//                                                                            //
+////////////////////////////////////////////////////////////////////////////////
+
+problem := procedure(s) {
+    return !("farmer" in s) && ("goat" in s && "cabbage" in s || "wolf" in s && "goat" in s);
+};
+
+// all objects in this riddle
+all := { "farmer", "wolf", "goat", "cabbage" };
+potAll := 2 ** all;
+
+// all allowed states
+p := { s : s in potAll | !problem(s) && !problem(all - s)};
+ships := { s : s in potAll | "farmer" in s && #s <= 2 };
+
+// [allowed state, newstate]
+r1  := { [s, s - b]: s in p, b in ships
+                   | s - b in p && "farmer" in b && #b <= 2 && b <= s
+};
+r2 := { [y, x] : [x, y] in r1 };
+r := r1 + r2;
+
+start := all;
+goal  := {};
+
+path  := findPath(start, goal, r);
+
+////////////////////////////////////////////////////////////////////////////////
+//                                                                            //
+// Display code                                                               //
+//                                                                            //
+////////////////////////////////////////////////////////////////////////////////
+
+mkPair := s |=> [s, all - s];
+// Print the path.
+printPath := procedure(path, all) {
+    for (i in [1 .. #path]) {
+        [s1, s2] := mkPair(path[i]);
+        if (#s1 == 0 || #s2 == 0) {
+            print(s1, 33 * " ", s2);
+        } else {
+            print(s1, 35 * " ", s2);
+        }
+        if (i == #path) {
+            break;
+        }
+        [t1, t2] := mkPair(path[i+1]);
+        if ("farmer" in s1) {
+            b := s1 - t1;
+            print("                         >>>> ", b, " >>>> " );
+        } else {
+            b := s2 - t2;
+            print("                         <<<< ", b, " <<<< " );
+        }
+    }
+};
+
+print("");
+printPath(path, all);
