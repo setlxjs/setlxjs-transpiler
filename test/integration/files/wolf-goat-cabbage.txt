@@ -1,1 +1,15 @@
-
+{"farmer", "wolf", "goat", "cabbage"}                                 {}
+                         >>>> {"farmer", "goat"} >>>>
+{"wolf", "cabbage"}                                   {"farmer", "goat"}
+                         <<<< {"farmer"} <<<<
+{"farmer", "cabbage", "wolf"}                                   {"goat"}
+                         >>>> {"farmer", "cabbage"} >>>>
+{"wolf"}                                   {"farmer", "cabbage", "goat"}
+                         <<<< {"farmer", "goat"} <<<<
+{"farmer", "goat", "wolf"}                                   {"cabbage"}
+                         >>>> {"farmer", "wolf"} >>>>
+{"goat"}                                   {"farmer", "wolf", "cabbage"}
+                         <<<< {"farmer"} <<<<
+{"farmer", "goat"}                                   {"cabbage", "wolf"}
+                         >>>> {"farmer", "goat"} >>>>
+{}                                 {"farmer", "wolf", "goat", "cabbage"}

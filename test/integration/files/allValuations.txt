@@ -1,72 +1,72 @@
 n = 1:
 testing {"x1"}
-{["x1", false]}
 {["x1", true]}
+{["x1", false]}
 n = 2:
 testing {"x1", "x2"}
-{["x1", false], ["x2", false]}
-{["x1", false], ["x2", true]}
-{["x1", true], ["x2", false]}
 {["x1", true], ["x2", true]}
+{["x1", true], ["x2", false]}
+{["x1", false], ["x2", true]}
+{["x1", false], ["x2", false]}
 n = 3:
 testing {"x1", "x2", "x3"}
-{["x1", false], ["x2", false], ["x3", false]}
-{["x1", false], ["x2", false], ["x3", true]}
-{["x1", false], ["x2", true], ["x3", false]}
-{["x1", false], ["x2", true], ["x3", true]}
-{["x1", true], ["x2", false], ["x3", false]}
-{["x1", true], ["x2", false], ["x3", true]}
-{["x1", true], ["x2", true], ["x3", false]}
-{["x1", true], ["x2", true], ["x3", true]}
+{["x1", true], ["x3", true], ["x2", true]}
+{["x1", true], ["x3", true], ["x2", false]}
+{["x1", true], ["x3", false], ["x2", true]}
+{["x1", true], ["x3", false], ["x2", false]}
+{["x1", false], ["x3", true], ["x2", true]}
+{["x1", false], ["x3", true], ["x2", false]}
+{["x1", false], ["x3", false], ["x2", true]}
+{["x1", false], ["x3", false], ["x2", false]}
 n = 4:
 testing {"x1", "x2", "x3", "x4"}
-{["x1", false], ["x2", false], ["x3", false], ["x4", false]}
-{["x1", false], ["x2", false], ["x3", false], ["x4", true]}
-{["x1", false], ["x2", false], ["x3", true], ["x4", false]}
-{["x1", false], ["x2", false], ["x3", true], ["x4", true]}
-{["x1", false], ["x2", true], ["x3", false], ["x4", false]}
-{["x1", false], ["x2", true], ["x3", false], ["x4", true]}
-{["x1", false], ["x2", true], ["x3", true], ["x4", false]}
-{["x1", false], ["x2", true], ["x3", true], ["x4", true]}
-{["x1", true], ["x2", false], ["x3", false], ["x4", false]}
-{["x1", true], ["x2", false], ["x3", false], ["x4", true]}
-{["x1", true], ["x2", false], ["x3", true], ["x4", false]}
-{["x1", true], ["x2", false], ["x3", true], ["x4", true]}
-{["x1", true], ["x2", true], ["x3", false], ["x4", false]}
-{["x1", true], ["x2", true], ["x3", false], ["x4", true]}
-{["x1", true], ["x2", true], ["x3", true], ["x4", false]}
-{["x1", true], ["x2", true], ["x3", true], ["x4", true]}
+{["x1", true], ["x4", true], ["x3", false], ["x2", false]}
+{["x1", true], ["x4", false], ["x3", true], ["x2", false]}
+{["x1", false], ["x4", false], ["x3", true], ["x2", false]}
+{["x1", true], ["x4", false], ["x3", false], ["x2", false]}
+{["x1", true], ["x4", true], ["x3", true], ["x2", true]}
+{["x1", false], ["x4", false], ["x3", false], ["x2", true]}
+{["x1", false], ["x4", false], ["x3", true], ["x2", true]}
+{["x1", false], ["x4", true], ["x3", true], ["x2", false]}
+{["x1", false], ["x4", true], ["x3", true], ["x2", true]}
+{["x1", true], ["x4", true], ["x3", true], ["x2", false]}
+{["x1", false], ["x4", true], ["x3", false], ["x2", true]}
+{["x1", true], ["x4", false], ["x3", false], ["x2", true]}
+{["x1", false], ["x4", false], ["x3", false], ["x2", false]}
+{["x1", true], ["x4", false], ["x3", true], ["x2", true]}
+{["x1", true], ["x4", true], ["x3", false], ["x2", true]}
+{["x1", false], ["x4", true], ["x3", false], ["x2", false]}
 n = 5:
 testing {"x1", "x2", "x3", "x4", "x5"}
-{["x1", false], ["x2", false], ["x3", false], ["x4", false], ["x5", false]}
-{["x1", false], ["x2", false], ["x3", false], ["x4", false], ["x5", true]}
-{["x1", false], ["x2", false], ["x3", false], ["x4", true], ["x5", false]}
-{["x1", false], ["x2", false], ["x3", false], ["x4", true], ["x5", true]}
-{["x1", false], ["x2", false], ["x3", true], ["x4", false], ["x5", false]}
-{["x1", false], ["x2", false], ["x3", true], ["x4", false], ["x5", true]}
-{["x1", false], ["x2", false], ["x3", true], ["x4", true], ["x5", false]}
-{["x1", false], ["x2", false], ["x3", true], ["x4", true], ["x5", true]}
-{["x1", false], ["x2", true], ["x3", false], ["x4", false], ["x5", false]}
-{["x1", false], ["x2", true], ["x3", false], ["x4", false], ["x5", true]}
-{["x1", false], ["x2", true], ["x3", false], ["x4", true], ["x5", false]}
-{["x1", false], ["x2", true], ["x3", false], ["x4", true], ["x5", true]}
-{["x1", false], ["x2", true], ["x3", true], ["x4", false], ["x5", false]}
-{["x1", false], ["x2", true], ["x3", true], ["x4", false], ["x5", true]}
-{["x1", false], ["x2", true], ["x3", true], ["x4", true], ["x5", false]}
-{["x1", false], ["x2", true], ["x3", true], ["x4", true], ["x5", true]}
-{["x1", true], ["x2", false], ["x3", false], ["x4", false], ["x5", false]}
-{["x1", true], ["x2", false], ["x3", false], ["x4", false], ["x5", true]}
-{["x1", true], ["x2", false], ["x3", false], ["x4", true], ["x5", false]}
-{["x1", true], ["x2", false], ["x3", false], ["x4", true], ["x5", true]}
-{["x1", true], ["x2", false], ["x3", true], ["x4", false], ["x5", false]}
-{["x1", true], ["x2", false], ["x3", true], ["x4", false], ["x5", true]}
-{["x1", true], ["x2", false], ["x3", true], ["x4", true], ["x5", false]}
-{["x1", true], ["x2", false], ["x3", true], ["x4", true], ["x5", true]}
-{["x1", true], ["x2", true], ["x3", false], ["x4", false], ["x5", false]}
-{["x1", true], ["x2", true], ["x3", false], ["x4", false], ["x5", true]}
-{["x1", true], ["x2", true], ["x3", false], ["x4", true], ["x5", false]}
-{["x1", true], ["x2", true], ["x3", false], ["x4", true], ["x5", true]}
-{["x1", true], ["x2", true], ["x3", true], ["x4", false], ["x5", false]}
-{["x1", true], ["x2", true], ["x3", true], ["x4", false], ["x5", true]}
-{["x1", true], ["x2", true], ["x3", true], ["x4", true], ["x5", false]}
-{["x1", true], ["x2", true], ["x3", true], ["x4", true], ["x5", true]}
+{["x1", false], ["x5", false], ["x4", false], ["x3", true], ["x2", false]}
+{["x1", false], ["x5", true], ["x4", false], ["x3", true], ["x2", true]}
+{["x1", true], ["x5", true], ["x4", true], ["x3", true], ["x2", true]}
+{["x1", true], ["x5", false], ["x4", true], ["x3", false], ["x2", true]}
+{["x1", false], ["x5", true], ["x4", true], ["x3", true], ["x2", true]}
+{["x1", false], ["x5", true], ["x4", false], ["x3", true], ["x2", false]}
+{["x1", false], ["x5", false], ["x4", false], ["x3", false], ["x2", true]}
+{["x1", false], ["x5", false], ["x4", true], ["x3", true], ["x2", true]}
+{["x1", true], ["x5", true], ["x4", false], ["x3", false], ["x2", true]}
+{["x1", true], ["x5", true], ["x4", true], ["x3", false], ["x2", false]}
+{["x1", true], ["x5", false], ["x4", false], ["x3", false], ["x2", true]}
+{["x1", false], ["x5", true], ["x4", false], ["x3", false], ["x2", false]}
+{["x1", true], ["x5", true], ["x4", true], ["x3", false], ["x2", true]}
+{["x1", false], ["x5", true], ["x4", true], ["x3", false], ["x2", false]}
+{["x1", false], ["x5", false], ["x4", true], ["x3", false], ["x2", true]}
+{["x1", true], ["x5", false], ["x4", true], ["x3", true], ["x2", true]}
+{["x1", false], ["x5", true], ["x4", true], ["x3", true], ["x2", false]}
+{["x1", true], ["x5", true], ["x4", false], ["x3", false], ["x2", false]}
+{["x1", true], ["x5", true], ["x4", true], ["x3", true], ["x2", false]}
+{["x1", true], ["x5", false], ["x4", false], ["x3", false], ["x2", false]}
+{["x1", false], ["x5", false], ["x4", true], ["x3", false], ["x2", false]}
+{["x1", false], ["x5", true], ["x4", false], ["x3", false], ["x2", true]}
+{["x1", true], ["x5", true], ["x4", false], ["x3", true], ["x2", true]}
+{["x1", true], ["x5", false], ["x4", false], ["x3", true], ["x2", false]}
+{["x1", true], ["x5", false], ["x4", true], ["x3", true], ["x2", false]}
+{["x1", false], ["x5", false], ["x4", false], ["x3", true], ["x2", true]}
+{["x1", false], ["x5", false], ["x4", true], ["x3", true], ["x2", false]}
+{["x1", true], ["x5", false], ["x4", true], ["x3", false], ["x2", false]}
+{["x1", false], ["x5", true], ["x4", true], ["x3", false], ["x2", true]}
+{["x1", true], ["x5", false], ["x4", false], ["x3", true], ["x2", true]}
+{["x1", true], ["x5", true], ["x4", false], ["x3", true], ["x2", false]}
+{["x1", false], ["x5", false], ["x4", false], ["x3", false], ["x2", false]}

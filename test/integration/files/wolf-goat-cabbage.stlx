@@ -88,13 +88,12 @@ printPath := procedure(path, all) {
         [t1, t2] := mkPair(path[i+1]);
         if ("farmer" in s1) {
             b := s1 - t1;
-            print("                         >>>> ", b, " >>>> " );
+            print("                         >>>> ", b, " >>>>" );
         } else {
             b := s2 - t2;
-            print("                         <<<< ", b, " <<<< " );
+            print("                         <<<< ", b, " <<<<" );
         }
     }
 };
 
-print("");
 printPath(path, all);
